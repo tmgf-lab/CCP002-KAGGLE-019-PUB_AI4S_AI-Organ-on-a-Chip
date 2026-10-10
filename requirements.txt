@@ -8,7 +8,7 @@ scikit-image==0.20.0
 scikit-learn==1.9.1
 statsmodels==0.14.0
 matplotlib==3.7.2
-pillow==11.3.0
+pillow==12.3.0
 tifffile==2023.4.12
 imagecodecs==2023.1.23     # decodes the LZW-compressed CPJUMP1 TIFFs
 pyyaml==6.0.3
