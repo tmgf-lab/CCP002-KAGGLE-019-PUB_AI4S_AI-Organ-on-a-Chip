@@ -1,0 +1,31 @@
+{
+ "combinations": 2304,
+ "valid": 2176,
+ "run": 1613,
+ "scored": 1613,
+ "complete": false,
+ "order": "random (seed 0)",
+ "workers": 10,
+ "wall_s": 4874.6,
+ "median_seconds_per_fitted_path": 5.57,
+ "best_exhaustive": {
+  "scope": "all_cell_types",
+  "preprocessing": "centre_crop",
+  "representation": "dinov2_small",
+  "fusion": "concat_with_handcrafted",
+  "reduction": "none",
+  "model": "logistic_l1",
+  "auc": 0.8624
+ },
+ "search_winner": {
+  "scope": "all_cell_types",
+  "preprocessing": "centre_crop",
+  "representation": "dinov2_small",
+  "fusion": "concat_with_handcrafted",
+  "reduction": "correlation_filter_0.9",
+  "model": "logistic_l1",
+  "auc": 0.8618,
+  "rank": 2
+ },
+ "paths_within_0.005_of_best": 9
+}

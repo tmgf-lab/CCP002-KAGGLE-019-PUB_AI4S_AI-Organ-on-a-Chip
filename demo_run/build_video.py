@@ -37,12 +37,12 @@ def g(k):
 
 # Each scene: visual + narration as (English, Chinese) sentence pairs (one subtitle per sentence).
 SCENES = [
-    ("card:Label-free, non-destructive readout\nof organ-on-a-chip experiments|Virtual staining · drug response · single cells · chip quality control",
+    ("card:Label-free, non-destructive readout\nof organ-on-a-chip experiments|Virtual staining · drug response · single cells · chip quality control\n\nTeam tmgf: submission to AI4S Open Innovation (AI for Life Science),\na track of the 5th Pazhou Algorithm Competition, hosted on Kaggle.\nNot made or endorsed by the organisers.",
      [("What if an organ-on-a-chip experiment could be read every day, without ever staining it?",
        "如果每天都能读取器官芯片实验的结果，而无需对其染色，会怎样？")]),
-    ("card:The problem|Stains such as Cell Painting need fixed cells.\nUsually one snapshot per chip, at the end.\nBright-field is label-free, but hard to read.",
+    ("card:The problem|Standard Cell Painting needs fixed cells:\none snapshot per sample, at the end.\nBright-field is label-free, but hard to read.",
      [("Organ-on-a-chip systems test drugs on human-like tissue over days.", "器官芯片系统可在类人组织上连续多日测试药物。"),
-      ("But they are usually read with fluorescent stains that need fixed cells, so each chip typically gives one snapshot.", "但它们通常使用需要固定细胞的荧光染色来读取，因此每块芯片通常只能得到一张快照。"),
+      ("But the standard Cell Painting stains need fixed cells, so each sample gives one snapshot, at the end.", "但标准的 Cell Painting 染色需要固定细胞，因此每个样本只能在终点得到一张快照。"),
       ("Bright-field imaging is label-free and non-destructive, but on its own it is hard to interpret.", "明场成像无需标记、不破坏样本，但单凭它很难解读。")]),
     ("card:One system, four questions|Q1  Predict five Cell Painting stains from bright-field\nQ2  Toxicity and drug response\n"
      "Q3  Single-cell phenotypes\nQ4  Chip quality control on real organ-on-a-chip images",
@@ -104,13 +104,15 @@ SCENES = [
     ("app:demo_recording.mp4",
      [("The same system also runs as a small web app on your own computer: pick a compound for the stains, the drug response and the cells, or a chip photo for its quality.",
        "同一系统也可以作为小型网页应用在本地电脑上运行：选择一种化合物，即可得到染色、药物反应和细胞结果；或选择一张芯片照片，检查其质量。")]),
-    ("card:Limits and next step|A new cell line needed its own training plate\nReal chips would likely need a stained calibration set\n"
-     "Strong toxicity was detected without stains; subtle effects needed them",
-     [("Virtual staining was learned per cell line, mitochondria did not transfer, and real chips would likely need a small stained calibration set.",
-       "虚拟染色是针对每种细胞系学习的，线粒体未能迁移，真实芯片可能还需要一小组染色校准样本。")]),
+    ("card:Limits and future research|Limits: one training plate per cell line; Q2–Q4 scores are optimistic\n"
+     "Next: test each search on data it never saw (nested or new data)\n"
+     "Next: stained calibration chips, then living chips imaged over days",
+     [("Virtual staining was learned per cell line, and the Q2 to Q4 scores are optimistic, because the same data chose and scored each path.",
+       "虚拟染色需要针对每种细胞系学习，而且 Q2 到 Q4 的得分偏乐观，因为选择和评估每条路径使用的是同一批数据。"),
+      ("Next: test each search on data it never saw, and validate on stained, then living, organ-on-a-chip samples.",
+       "下一步：在从未见过的数据上检验每次搜索，并先在染色后、再在活体器官芯片样本上进行验证。")]),
     ("card:Image every day, stain once to calibrate|Team tmgf · code, weights, notebook and web demo: links in the Writeup",
-     [("The proposed use, still to be tested on chips: image every chip every day, and stain once to calibrate.", "建议的用法（尚需在芯片上验证）：每天对每块芯片成像，只染色一次用于校准。"),
-      ("Code, weights, the notebook and the web demo are all open. Thank you.", "代码、模型权重、笔记本和网页演示全部开放。谢谢。")]),
+     [("Code, weights, the notebook and the web demo are all open. Thank you.", "代码、模型权重、笔记本和网页演示全部开放。谢谢。")]),
 ]
 
 

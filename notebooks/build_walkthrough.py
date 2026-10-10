@@ -15,8 +15,8 @@ md("""# Label-free, non-destructive readout of organ-on-a-chip experiments: a wa
 **AI4S Open Innovation: AI for Life Science** · Category: **End-to-End System** · Team **tmgf** (tiagomgfernandes)
 · [Code](https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip) · Video: see the Kaggle Writeup<!--YOUTUBE-->
 
-Organ-on-a-chip experiments are often read with fluorescent stains such as Cell Painting, an endpoint assay that ends with fixation, so
-each chip gives one endpoint snapshot; this project asks whether AI can read them instead from **bright-field images alone**, through four questions:
+The standard Cell Painting stain protocol requires fixation, which makes it an endpoint assay, so
+each sample gives one snapshot; this project asks whether the same information can be read from **bright-field images alone**, through four questions:
 
 | | Question | Input → output |
 |---|---|---|
@@ -29,6 +29,11 @@ Every question is answered the same way: a **guided search over analysis paths**
 evaluation). Each path is scored on **25% → 50% → 100%** of the data; the worse half is stopped at each checkpoint, options
 that fail 4 times are excluded, repeats are skipped, and test data is used once at the end.
 
+**Sample or full (`MODE`, first code cell).** `MODE = "sample"` (default) runs every step on a small share of the data, in minutes
+on a CPU; `MODE = "full"` runs the same commands on all the data with the study's budgets (all plates, the full Q1 tree, all 16 Q2
+searches), which needs a GPU and many hours. The two modes run the same code, so a passing sample run tests the steps of the full
+run. Steps that are not run here (the Q1 final stage, Q3 and Q4 searches, U2OS) use the commands of the last section.
+
 **How this notebook works.** Each section first runs a **small real version** of the same command used for the full results
 (fewer paths, less data, so it finishes in minutes), then loads the **saved full-scale results** from `results/`.
 Small runs show *how* the system works; their numbers are not the reported results.
@@ -36,11 +41,17 @@ Small runs show *how* the system works; their numbers are not the reported resul
 Runtime: under 20 minutes on a CPU (9 min on a 12-core laptop; Kaggle CPU sessions have 4 cores), a few minutes on a GPU. Internet is needed (data streams from the public
 Cell Painting Gallery, CC0)."""),
 md("## 0. Setup"),
-code("""import os, sys, json, subprocess, glob
+code(r"""import os, sys, json, subprocess, glob
 from pathlib import Path
+
+# MODE "sample" (default): every step runs on a small share of the data, in minutes on a CPU.
+# MODE "full": the same commands on all the data with the study's budgets (needs a GPU and many hours; set VCP_MODE=full).
+MODE = os.environ.get("VCP_MODE", "sample")
+assert MODE in ("sample", "full"), MODE
 
 # Inside the repository: use it. On Kaggle or elsewhere: clone it (the data and weights are downloaded below).
 ROOT = next((p for p in [Path.cwd(), Path.cwd().parent] if (p / "sweep" / "engine.py").exists()), None)
+CLONED = ROOT is None  # e.g. on Kaggle: clone the repository and install what the image lacks
 if ROOT is None:
     subprocess.run(["git", "clone", "--depth", "1", "https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip", "vcp"], check=True)
     ROOT = Path("vcp").resolve()
@@ -48,6 +59,35 @@ if ROOT is None:
                     "mahotas", "imagecodecs", "umap-learn", "leidenalg"], check=False)
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT))
+
+# Check that this kernel has the packages of requirements.txt (the web-demo package gradio is not needed here).
+import importlib.metadata as _md, re as _re
+_need = [_re.split(r"[=<>~!\s#;]", l.strip())[0] for l in open(ROOT / "requirements.txt")
+         if l.strip() and not l.lstrip().startswith("#")]
+_missing = []
+for _n in _need:
+    try:
+        _md.version(_n)
+    except _md.PackageNotFoundError:
+        _missing.append(_n)
+_missing = [n for n in _missing if n.lower() != "gradio"]
+if _missing and not CLONED:
+    # Install the missing packages into THIS kernel's Python (exact versions of requirements.txt; in an existing environment this can
+    # change versions already installed there, so a dedicated environment is recommended, see the README).
+    print("Installing missing packages into", sys.executable, ":", ", ".join(_missing))
+    !{sys.executable} -m pip install -q -r requirements.txt
+    _still = []
+    for _n in _missing:
+        try:
+            _md.version(_n)
+        except _md.PackageNotFoundError:
+            _still.append(_n)
+    if _still:
+        raise RuntimeError("Could not install: " + ", ".join(_still) + ". See the pip messages above, or set up the environment of the "
+                           "README (python3.11 -m venv .venv; pip install -r requirements.txt) and select it as the kernel.")
+    print("Installed. If a cell below fails on an import, restart the kernel and run the notebook again.")
+elif _missing:
+    print("Warning: packages not found (installed above where possible):", ", ".join(_missing))
 os.environ["PATH"] = os.path.dirname(sys.executable) + os.pathsep + os.environ["PATH"]  # `!python` = this kernel
 os.environ.update(PYTHONWARNINGS="ignore", TF_CPP_MIN_LOG_LEVEL="3", VCP_VERBOSE_PATHS="1", PYTHONNOUSERSITE="1")
 import tempfile
@@ -58,7 +98,7 @@ import warnings; warnings.filterwarnings("ignore")
 import numpy as np, pandas as pd, matplotlib.pyplot as plt, torch
 from IPython.display import Image, display
 GPU = torch.cuda.is_available()
-print("repository:", ROOT, "| work folder:", WORK, "| device:", "GPU" if GPU else "CPU")"""),
+print("mode:", MODE, "| repository:", ROOT, "| work folder:", WORK, "| device:", "GPU" if GPU else "CPU")"""),
 code("""# The final Q1 model (2 seeds, 121 MB each) is not in git: download once and verify the checksums.
 from weights import winner_json
 WINNER = winner_json()
@@ -74,7 +114,10 @@ fluorescent stains and 3 bright-field planes. Compounds are split **by compound*
 Below, `download.py` streams a **sample** of the training plate (8 wells per split, one field per well) for the small Q1 run.
 The full study used the 1,152 fields of the training plate (888 training and DMSO, 96 validation, 168 held-out compounds) and
 1,536 test fields (2 plates never used for Q1 training)."""),
-code("""!VCP_DATA={WORK}/data python download.py --sample 8 --plates BR00117015 --sites 1"""),
+code("""if MODE == "sample":   # 8 wells per split of the training plate, one field each
+    !VCP_DATA={WORK}/data python download.py --sample 8 --plates BR00117015 --sites 1
+else:                  # every field of the training and test plates in config.py (about 13 GB)
+    !VCP_DATA={WORK}/data python download.py"""),
 code("""import config as C, importlib
 os.environ["VCP_DATA"] = str(WORK / "data"); importlib.reload(C)
 import data as D; importlib.reload(D)
@@ -96,8 +139,11 @@ A path is `data → processing → model → exploration` (U-Net width, depth, a
 (`sweep/configs/q1_demo.yaml`), short training (and even shorter on a CPU). Watch each path go 25% → 50% → 100% and the worse
 half stop."""),
 code("""print(open("sweep/configs/q1_demo.yaml").read())"""),
-code("""os.environ.update(VCP_RUNS=str(WORK / "q1"), VCP_Q1_CONFIG="q1_demo.yaml")
-smoke, trials = ("", 6) if GPU else ("--smoke", 4)   # CPU: 4 paths, 10 training steps per checkpoint: mechanics only
+code("""os.environ.update(VCP_RUNS=str(WORK / "q1"), VCP_Q1_CONFIG="q1_demo.yaml" if MODE == "sample" else "q1_translation.yaml")
+if MODE == "sample":
+    smoke, trials = ("", 6) if GPU else ("--smoke", 4)   # CPU: 4 paths, 10 training steps per checkpoint: mechanics only
+else:
+    smoke, trials = "", 40   # the study's tree and budget (40 paths; the study used 2 GPUs for 6.5 h)
 !python -m sweep.q1_translation init
 !python -m sweep.q1_translation search --gpu 0 --trials {trials} {smoke}
 !python show.py q1search {WORK}/q1"""),
@@ -164,7 +210,10 @@ Four feature sources (**real stains, virtual stains, bright-field, bright-field 
 cell loss, viability, and *non-toxic drug vs DMSO*). A path is `cleaning → transform → selection → reduction → model →
 calibration → imbalance`; cross-validation is grouped by compound. Below: one source × label, 30 paths, each printed with
 its score at each stage; excluded options are announced."""),
-code("""!python -m sweep.q2_search search --source virtual --label treated_vs_dmso --budget 30 --workers 4 --hours 0.1 --features results/a549/q1_test/site_features.csv --out {WORK}/q2
+code("""if MODE == "sample":   # one source x label, 30 paths
+    !python -m sweep.q2_search search --source virtual --label treated_vs_dmso --budget 30 --workers 4 --hours 0.1 --features results/a549/q1_test/site_features.csv --out {WORK}/q2
+else:                  # all 16 searches with the study's budget (250 paths and 1.1 h each)
+    !python -m sweep.q2_search all --budget 250 --workers 4 --hours 1.1 --features results/a549/q1_test/site_features.csv --out {WORK}/q2
 !python show.py search {WORK}/q2/searches/q2_virtual_treated_vs_dmso_summary.json"""),
 md("""**Full results** (16 searches, 3,912 paths; best path per source × label assessed with bootstrap CIs, DeLong tests with Holm
 correction and a Bayesian bootstrap). Strong toxicity is visible even in bright-field; for non-toxic drugs that still

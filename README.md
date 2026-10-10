@@ -9,13 +9,17 @@ toxicity/response, single-cell analysis, and an automatic chip quality check. Su
 ## Quick start (CPU is enough)
 
 ```bash
-pip install -r requirements.txt          # Python 3.11; CPU-only torch is fine
+python3.11 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt          # Python 3.11; CPU-only torch is fine (exact versions of the reported runs)
+python -m ipykernel install --user --name vcp --display-name "Python (vcp, organ-on-a-chip)"   # kernel for the notebook
 python weights.py                        # downloads the final model (2 x 121 MB), verifies checksums
 python vcp_system.py --plate BR00117019 --wells B16 B04 A01 --dmso 4 --chips apps/web_demo/examples/chips/*.png --out reports/demo
                                          # END-TO-END: Q1 virtual stains -> Q2 drug response + Q3 cells per well; Q4 chip quality
 python demo.py --compound PP-121         # Q1 only, one field -> demo.png
 cd apps/web_demo && python app.py        # web demo of the system (Q1-Q4), opens in the browser
-jupyter lab notebooks/walkthrough.ipynb  # walkthrough of Q1-Q4 with small real runs + all saved results (under 20 min on CPU)
+jupyter lab notebooks/walkthrough.ipynb  # walkthrough of Q1-Q4 with small real runs + all saved results (under 20 min on CPU);
+                                         # needs Jupyter (pip install jupyterlab) or VS Code; select the kernel
+                                         # "Python (vcp, organ-on-a-chip)"
 ```
 
 ## Inputs and outputs
@@ -66,7 +70,7 @@ successive halving, an option-exclusion rule (4 bad results), duplicate skipping
 | `kaggle_jobs/build.py` | writes a Kaggle notebook for each stage (to run the searches on free Kaggle GPUs) |
 | `apps/web_demo`, `apps/kaggle` | web demo (Gradio; `cd apps/web_demo && python app.py`, opens in the browser) and the Kaggle notebook package (`push.sh`) |
 | `demo_run/` | the scripts that recorded the real runs in the video and built it (`record_all.sh`, `record_lab.py`, `build_video.py`) |
-| `tools/` | `collect_results.py` (results/ → results.json), `report_figures.py` (figures/), `fill_links.py` (public links) |
+| `tools/` | `collect_results.py` (results/ → results.json), `report_figures.py` (figures/), `audit_numbers.py` (checks every number of the report against the run outputs → `docs/number_sources.md`), `q4_exhaustive.py` (runs the whole searched Q4 tree as a check of the guided search), `fill_links.py` (public links) |
 | `docs/` | technical report (`technical_report.md` → `bash docs/build_pdf.sh`, or `docs\build_pdf.bat` on Windows → PDF) |
 | `results/`, `figures/` | every score, report and search log; report figures |
 | `video/` (not in git) | the demo video and its English / Chinese captions |

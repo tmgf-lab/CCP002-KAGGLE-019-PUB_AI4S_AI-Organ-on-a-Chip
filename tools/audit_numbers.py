@@ -132,7 +132,7 @@ check("Summary", "while Q4 reaches", f"{F['q4']['held_out_AUC']:.2f}", "models/f
 check("Table 2", "| 302 compounds", n_cpd, "results/a549/q1_test/site_features.csv (distinct pert_iname except DMSO)", 2)
 check("Table 2", "in 320 wells + ", n_dmso, "results/a549/q1_test/site_features.csv (DMSO wells per plate)", 5)
 check("Table 2", "168 held-out compounds), ", f"{len(SITE_A):,}", "results/a549/q1_test/site_features.csv (rows: 2 plates x 384 wells x 2 sites)", 8)
-check("Table 2", "BR00117012 (the only two", "768", "results/u2os/q1/site_features.csv (rows)", 160)
+check("Table 2", "1,152 fields on the training plate, ", "768", "results/u2os/q1/site_features.csv (rows)", 10)
 check("Table 2", "evaluation by cross-validation | ", f"{Q4A['n_images']:,}", "results/chips/q4/q4_assess.json (n_images)", 8)
 check("Table 2", "3,072 images, ", f'{Q4A["n_experiments"]} experiment groups', "results/chips/q4/q4_assess.json (n_experiments)", 4)
 check("Table 2", "image-ID prefix), ", len(Q4A["per_cell_type_auc"]["best"]), "results/chips/q4/q4_assess.json (per_cell_type_auc: cell types)", 2)
@@ -348,14 +348,21 @@ c_q1 = float(pd.Series([t.user_attrs.get("p3_minutes") for t in _st.trials if t.
 c_q2 = med_seconds(glob.glob(str(RES / "a549/q2/searches/*_paths.csv")))
 c_seg = med_seconds([RES / "a549/q3/seg/q3_seg_paths.csv"]) / 60
 c_down = med_seconds([RES / "a549/q3/down/q3_down_paths.csv"])
-c_q4 = med_seconds([RES / "chips/q4/q4_search_paths.csv"])
+_ex = pd.read_csv(RES / "chips/q4/q4_exhaustive.csv")
+c_q4 = float(_ex.seconds[_ex.seconds > 0.05].median())  # fitted from scratch; the search log mostly timed cache reads
 check("Table 3", "| Cost of one path (median elapsed time) | ", f"~{c_q1:.0f} GPU-minutes | ~{c_q2:.0f} s (one of 4 parallel workers) | ~{c_seg:.0f} GPU-minutes (segmentation); ~{c_down:.0f} s",
       "results/a549/q1_search/study.db and results/*/…/*_paths.csv (median over completed paths of: Q1 user_attrs > p3_minutes; others seconds_100, the elapsed time to the 100% checkpoint)", 120)
-check("Table 3", "| Cost of one path (median elapsed time) | ", f"~{c_q4:.1f} s (cached embeddings)", "results/chips/q4/q4_search_paths.csv (median seconds_100 of completed paths)", 170)
+check("Table 3", "| Cost of one path (median elapsed time) | ", f"~{c_q4:.0f} s per path fitted from scratch", "results/chips/q4/q4_exhaustive.csv (median seconds of paths fitted, not read from cache)", 170)
 check("§3", "would have needed about", f"{size_q1 * c_q1 / 1440:.1f} GPU-days for Q1, about {q2_all * c_q2 / 86400:.0f} days of one CPU worker for Q2 and about "
       f"{size_seg * c_seg / 1440:.0f} GPU-days", "Table 3 rows (computed: searched tree × median cost per path)", 120)
-check("§3", "small enough to have been run exhaustively (", f"{size_q4:,} paths, about {size_q4 * c_q4 / 60:.0f} minutes", "Table 3 rows (computed: q4 searched tree × median cost / 60)", 10)
-check("§3", "cost of one path differs by a factor of about", f"{round(c_q1 * 60 / c_q4, -4):,.0f}", f"Q1 vs Q4 median cost per path (computed: {c_q1 * 60:.0f} s / {c_q4:.3f} s = {c_q1 * 60 / c_q4:,.0f})", 10)
+QX = json.loads((RES / "chips/q4/q4_exhaustive_summary.json").read_text())
+check("§3", "The searched Q4 tree (", f"{QX['combinations']:,} combinations, {QX['valid']:,} valid", "results/chips/q4/q4_exhaustive_summary.json (combinations, valid)", 10)
+check("§3", "from scratch took", f"{QX['wall_s'] / 60:.0f} minutes on 10 CPU workers for {QX['run']:,}", "results/chips/q4/q4_exhaustive_summary.json (wall_s, run)", 10)
+check("§3", "cost of one path differs by a factor of", "a few hundred", f"Q1 vs Q2/Q4 median cost per path (computed: {c_q1 * 60:.0f} s / {c_q2:.1f} s = {c_q1 * 60 / c_q2:.0f}; / {c_q4:.1f} s = {c_q1 * 60 / c_q4:.0f})", 10)
+check("§7", "Check of the guided search: ", f"{QX['run']:,} of the {QX['valid']:,} valid paths", "results/chips/q4/q4_exhaustive_summary.json (run, valid)", 5)
+check("§7", "The guided search's winner ranked", f"{QX['search_winner']['rank']}nd (AUC {QX['search_winner']['auc']:.4f})", "results/chips/q4/q4_exhaustive_summary.json (search_winner > rank, auc)", 5)
+check("§7", "the best path, AUC", f"{QX['best_exhaustive']['auc']:.4f}", "results/chips/q4/q4_exhaustive_summary.json (best_exhaustive > auc)", 5)
+check("§7", "correlation filter, and", f"{QX['paths_within_0.005_of_best']} paths were within 0.005", "results/chips/q4/q4_exhaustive_summary.json (paths_within_0.005_of_best)", 5)
 sp = W.groupby("split").size() // W.plate.nunique()  # wells per plate by role; the training plate has 3 sites per well
 check("Table 2", "1,152 fields on the training plate (", f"{3 * (sp['train'] + sp['control'])} training and DMSO, {3 * sp['val']} validation, {3 * sp['test']} held-out",
       "results/a549/q1_test/site_features.csv (split of each well: train + control, val, test) × 3 sites on the training plate", 10)

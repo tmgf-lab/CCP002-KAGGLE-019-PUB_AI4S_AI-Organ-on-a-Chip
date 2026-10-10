@@ -111,7 +111,7 @@ def fig_q2():
     if not f.exists():
         return
     rep = json.loads(f.read_text())["results"]
-    labels = [("toxic_0.5", "Kills > 50% of cells"), ("toxic_0.8", "Kills > 20% of cells"),
+    labels = [("toxic_0.5", "> 50% fewer nuclei (AUC)"), ("toxic_0.8", "> 20% fewer nuclei (AUC)"),
               ("treated_vs_dmso", "Non-toxic: treated vs DMSO"), ("viability", "Viability (R²)")]
     fig, axes = plt.subplots(1, 4, figsize=(12, 3.6), sharey=False)
     for ax, (lab, title) in zip(axes, labels):
@@ -328,7 +328,7 @@ def fig_replication():
     ax.set(ylim=(0.5, 1.0), title="Q1 virtual staining (test)", ylabel="pixel Pearson r")
     ax.grid(axis="x", visible=False)
     ax = axes[1]
-    labs = [("toxic_05", "kills >50%"), ("toxic_08", "kills >20%"), ("viability", "viability R²"), ("treated_vs_dmso", "non-toxic vs DMSO")]
+    labs = [("toxic_05", ">50% fewer nuclei"), ("toxic_08", ">20% fewer nuclei"), ("viability", "viability R²"), ("treated_vs_dmso", "non-toxic vs DMSO")]
     x = np.arange(len(labs))
     for j, (pre, col) in enumerate([("q2", A549), ("u2_q2", U2)]):
         for src, hatch, off in (("virtual", None, -0.2), ("brightfield", "///", 0.2)):

@@ -11,12 +11,18 @@ header-includes:
   - \usepackage{caption}
   - \captionsetup{labelfont=bf, textfont=it, labelsep=newline, justification=raggedright, singlelinecheck=false, skip=4pt}
   - \hyphenation{Figure Table}
+  # let large figures share a page with text instead of sitting alone on a float page
+  - \renewcommand{\topfraction}{0.92}
+  - \renewcommand{\bottomfraction}{0.8}
+  - \renewcommand{\textfraction}{0.05}
+  - \renewcommand{\floatpagefraction}{0.9}
 ---
 
 # Summary
 
-Organ-on-a-chip (OoC) experiments are often read out with fluorescent stains such as Cell Painting, an endpoint assay that ends
-with fixing the cells, so each sample typically yields a single snapshot instead of the time course it could provide. An end-to-end
+The standard Cell Painting protocol, used for the data analysed here, requires fixation, which makes it an endpoint assay; virtual
+staining from unlabelled bright-field images could provide a repeatable alternative readout, for example for organ-on-a-chip (OoC)
+experiments that run for days. An end-to-end
 system was built that reads bright-field images and was tested on four questions: Q1–Q3 on Cell Painting plates of two cell lines
 (A549 and U2OS), not on chips, and Q4 on a separate dataset of OoC microscopy images. Each question was answered by a guided search
 over many alternative analysis paths (complete pipelines with one option chosen at each step, §3) with frequentist and Bayesian
@@ -68,10 +74,9 @@ CC BY 4.0), and the code, weights, search logs and every per-path score are rele
 # 1. Problem and impact
 
 OoC devices recreate tissue interfaces, perfusion and mechanical cues and are increasingly used for preclinical toxicity and
-efficacy testing [1], yet their imaging readout often relies on endpoint staining, which ends with fixing the cells, costs reagents and
-hands-on time inside microchannels, and can usually be done only once per chip. Bright-field imaging needs neither fixation nor
-labels and is available on most OoC microscopes, and deep networks can already predict fluorescent labels from unlabelled images [2], including the Cell Painting
-stains [3, 4]. The question addressed here is whether such virtual stains could preserve the information needed to judge whether a drug reduces cell numbers, whether it
+efficacy testing [1]. The standard Cell Painting protocol [2], used for the data analysed here, requires fixation, which makes it
+an endpoint assay, whereas bright-field imaging needs neither fixation nor labels. Deep networks can predict fluorescent labels from
+transmitted-light images of unlabelled cells [3], and the five Cell Painting channels from bright-field images [4]. The question addressed here is whether such virtual stains could preserve the information needed to judge whether a drug reduces cell numbers, whether it
 changes cells without doing so, what happens to single cells, and whether an OoC image is rated good or bad by experts.
 
 # 2. System overview
@@ -100,10 +105,12 @@ Table: Datasets, Each a Separate Study
 | Dataset | Use | Size |
 |---|---|---|
 | A549, CPJUMP1 48 h (Cell Painting Gallery cpg0000, CC0) | main study: Q1 trained on BR00117015 (+ BR00117016 in one variant); BR00117017/19 are the Q1 test plates (never used for Q1 training or choices) and the plates on which the Q2 and Q3 paths were chosen and scored | 302 compounds in 320 wells + 64 DMSO wells per plate; 1,152 fields on the training plate (888 training and DMSO, 96 validation, 168 held-out compounds), 1,536 test fields |
-| U2OS, CPJUMP1 48 h | replication: the A549 winning paths retrained on BR00117011, tested once on BR00117012 (the only two U2OS 48 h compound plates in which no staining anomalies were found) | 1,152 fields on the training plate, 768 test fields |
+| U2OS, CPJUMP1 48 h | replication: Q1 retrained on BR00117011 and evaluated on BR00117012; the fixed A549 Q2/Q3 pipeline choices evaluated on BR00117012 without a new path search (the only two U2OS 48 h compound plates with no anomaly in the CPJUMP1 plate metadata, `experiment-metadata.tsv` of the dataset's repository [5]) | 1,152 fields on the training plate, 768 test fields |
 | OoC image dataset (Zenodo 10203721, CC BY 4.0) | Q4: training, path selection and evaluation by cross-validation | 3,072 images, 59 experiment groups (from the image-ID prefix), 6 cell types |
 
-Datasets are never options inside a search: each is its own study. 55 of the 302 compounds (18%; a deterministic hash with a 20% target) never enter Q1
+Compound counts in this report are those of the plates analysed (302 distinct names besides DMSO); the dataset description
+reports a slightly larger compound set [5], and the difference was not traced. Datasets are never options inside a search: each is
+its own study. 55 of the 302 compounds (18%; a deterministic hash with a 20% target) never enter Q1
 training on any plate, so every result can be split into seen vs held-out compounds.
 
 # 3. Method: guided path search and validation
@@ -124,7 +131,7 @@ Table: Nodes of the Search Tree of Each Question
 | Exploration | width, depth, up-sampling (attention off); inference mode in the final stage | calibration, class imbalance | diameter, thresholds; features, embedding, number of states | trained layers, learning rate (fine-tuning) |
 | Evaluation | validation pixel r | AUC (R² for viability) | F1 of virtual vs real masks; ARI of states | AUC |
 | Searched tree (combinations) | 72 | 20,736 per stain-source classification search; 250,056 over the 16 searches | 600 segmentation; 576 cell states | 2,304 (+ 24 fine-tuning) |
-| Cost of one path (median elapsed time) | ~30 GPU-minutes | ~6 s (one of 4 parallel workers) | ~21 GPU-minutes (segmentation); ~18 s (states) | ~0.2 s (cached embeddings) |
+| Cost of one path (median elapsed time) | ~30 GPU-minutes | ~6 s (one of 4 parallel workers) | ~21 GPU-minutes (segmentation); ~18 s (states) | ~6 s per path fitted from scratch (cached embeddings) |
 | Budget and time limit | 2 × 20 paths, 6.5 h on 2 GPUs | 250 paths and 1.1 h per search | 4 h (segmentation), 5 h (states), 1.5 h (per-cell classifiers) | 1,000 paths in 9 h; 24 fine-tuning paths in 3 h |
 | Proposed / run / completed | 30 / 30 / 17 | 11,294 / 3,912 / 1,584 | 93 / 31 / 9; 340 / 65 / 20; 329 / 49 / 11 | 1,877 / 1,003 / 484 |
 
@@ -132,7 +139,9 @@ Table: Nodes of the Search Tree of Each Question
 search of per-cell treated-vs-DMSO classifiers. Cross-validation is grouped by compound (Q2), well (Q3) or experiment (Q4). Searched tree: all combinations of the options the search code
 actually offered, before the tree's rules; the config files list a few more options that were never run (Q1 attention gates; Q2
 Bayesian models, used only in the assessment; Q4 per-cell-type scope, virtual-stain features and a Bayesian logistic classifier).
-Cost: median elapsed time from the start of a completed path to its 100% checkpoint, from the search logs.
+Cost: median elapsed time from the start of a completed path to its 100% checkpoint, from the search logs; for Q4 the search
+reused predictions cached from earlier runs, so its logged times (median 0.2 s) mostly measured cache reads, and the cost shown is
+the median of the exhaustive check below (5.6 s per path on one of 10 parallel workers).
 Proposed: paths suggested by the sampler; run: paths actually evaluated; completed: paths that reached 100% of the data, the
 others having been stopped early by the halving rule or, rarely, failed (Q2: 8) or cut by the time limit (Q1: 1). Proposals that
 repeated a path or used an excluded option were skipped without running; the Q1 search ran before this skip existed, so 14 of its
@@ -159,15 +168,20 @@ Most searched trees could not be run in full within the time and computing resou
 the runs, sessions of at most 12 hours and about 30 GPU-hours per week) and the competition deadline; the Q1 search, for example,
 had 13 GPU-hours (two GPUs for 6.5 hours). Each search was therefore given a fixed budget of paths and a time limit, and the warm-up,
 guided sampling, early stopping and exclusion rule were used to spend that budget on the most promising paths. The number of paths
-differs between questions because the cost of one path differs by a factor of about 10,000: a Q1 path trains a U-Net (about 30
+differs between questions because the cost of one path differs by a factor of a few hundred: a Q1 path trains a U-Net (about 30
 GPU-minutes) and a Q3 segmentation path runs Cellpose on all test fields (about 21 GPU-minutes), whereas a Q2 path fits a model on
 per-well features in about 6 seconds and a Q4 path fits a classifier on image embeddings that are computed once and cached (about
-0.2 s). The procedure is the same for every question; only the budget, set by the cost of a path, differs. The searched Q4 tree is
-small enough to have been run exhaustively (2,304 paths, about 7 minutes once the embeddings exist); the guided search was kept so
-that all questions follow the same workflow, and an exhaustive Q4 run would be a useful check. These estimates multiply a median
+6 s). The procedure is the same for every question; only the budget, set by the cost of a path, differs. The searched Q4 tree
+(2,304 combinations, 2,176 valid under its rules) was also run as a check of the guided search (§7); fitting each path
+from scratch took 81 minutes on 10 CPU workers for 1,613 (a random 74%) of the valid paths. These estimates multiply a median
 cost by a count of combinations before rules, so they give orders of magnitude, not exact costs.
 
-## Validation: what each score is independent of
+Compute: kaggle 2×T4 GPU sessions for training and segmentation searches (Q1, Q3, Q4 embeddings, U2OS training) and 4-core CPU
+sessions for the first Q2/Q4 searches; test-time inference and the reruns of the Q2 and Q3 model searches ran on a local
+workstation (12 CPU cores, 6 GB GPU) with the same code and settings. Searches with a time limit can therefore evaluate a slightly
+different number of paths; budgets, rules and data are identical.
+
+## How the scores were validated
 
 Q1 is the only question with a separate test set: its paths and final configuration were chosen on validation fields of the
 training plate, and the test plates BR00117017/19 were used once, for the reported Q1 scores. Q2 and Q3 were then searched and
@@ -195,12 +209,6 @@ the four best paths' features in Q4. The posteriors were summarised (credible in
 plotted or saved as samples, no prior-sensitivity analysis or MCMC convergence diagnostics (R-hat, effective sample size) were kept,
 and the hierarchical and horseshoe Bayesian models listed in the Q2 configuration were not run.
 
-## Compute
-
-Kaggle 2×T4 GPU sessions for training and segmentation searches (Q1, Q3, Q4 embeddings, U2OS training) and 4-core CPU
-sessions for the first Q2/Q4 searches; test-time inference and the reruns of the Q2 and Q3 model searches ran on a local
-workstation (12 CPU cores, 6 GB GPU) with the same code and settings. Searches with a time limit can therefore evaluate a slightly
-different number of paths; budgets, rules and data are identical.
 
 # 4. Q1: Virtual staining
 
@@ -214,14 +222,29 @@ are excluded here because datasets are separate studies (none was among the five
 the best path at 100% data was 0.0037 (pixel r), and validation r still rose from 50% to 100% data.
 Search limitation: the sampler proposed already-evaluated paths 14 times; the engine now skips duplicates.
 
+Training is counted in optimisation steps, not epochs. Each step uses 12 random 256 × 256 crops of 540 × 540 fields, so one pass over
+the 888 training and DMSO fields of the training plate is about 330 steps; the 2,000 + 2,000 + 4,000 steps of a completed path are
+about 24, 12 and 12 passes over its 25%, 50% and 100% data. Steps are the natural unit with random crops, and the learning rate
+follows a one-cycle schedule over the whole step budget, which is meant to be stopped at its end: the model kept is the one at the
+end of training, not a checkpoint chosen along the way. Validation is scored three times, at the ends of the three phases, because
+those are the points where the successive-halving rule compares paths; scoring more often would have cost GPU time on free sessions
+without changing which paths were stopped. The cost of this choice is a coarse learning curve: a validation dip between checkpoints
+would not be seen, although validation r rose at every checkpoint of the completed paths (Figure 8A).
+
+Earlier exploratory experiments: with the starting model, SSIM, gradient and spectrum losses did not measurably change validation r; a GAN made images sharper but cut
+activity mAP from 0.313 to 0.257; one bright-field plane instead of three cut it to 0.241. On real chip images, zero-shot virtual
+staining was judged, by eye, plausible for only about a quarter of the images.
+
 ![Q1 Path Search](../figures/fig_q1_search.png)
 
 *Note.* Left: each path's validation pixel r at 25%, 50% and 100% of the data; a score below the axis is drawn as ▼ on its edge with its value. A path is stopped only against paths already scored at the same checkpoint, so the second path of the search (the pretrained encoder) reached 100% without competition. Right: the best distinct paths at 100% of the data.
 
 ## Final stage
 
-The top 3 distinct paths were trained with 2–3 seeds, the baseline with 3 seeds, and the best path also with a second training
-plate and/or focus quality control. The winner is final/t038 (2 seeds) with inference seed_ensemble+tta, all chosen on validation
+The top 3 distinct paths and the baseline were each trained with 3 seeds (a seed fixes the random starting weights and the order
+of the training images, so repeating a path with different seeds shows how much of its score is chance, and the seed models can be
+averaged). One run of the best path (seed 2) diverged in its first phase (non-finite loss) and failed, so the winner has 2 seeds
+(1 and 3). The best path was also trained with a second training plate and/or focus quality control. The winner is final/t038 (2 seeds) with inference seed_ensemble+tta, all chosen on validation
 fields (single_best_seed 0.9586; tta 0.9606; seed_ensemble 0.9601; seed_ensemble+tta 0.9612). The variants a549_focus_qc and
 a549_2plates_focus_qc completed only 1 of 2 seeds within the session limit and could not compete (the winner rule requires
 ≥ 2 seeds); the two-plate variant without quality control did not beat the winner (0.957 vs 0.958).
@@ -239,11 +262,6 @@ starting model (virtual mAP 0.313 → 0.340).
 
 *Note.* For each cell line (A549 top, U2OS bottom): the bright-field input, then the five stains, real (upper row) and virtual (lower row).
 
-## Earlier exploratory experiments
-
-With the starting model, SSIM, gradient and spectrum losses did not measurably change validation r; a GAN made images sharper but cut
-activity mAP from 0.313 to 0.257; one bright-field plane instead of three cut it to 0.241. On real chip images, zero-shot virtual
-staining was judged, by eye, plausible for only about a quarter of the images.
 
 # 5. Q2: Toxicity and drug response
 
@@ -257,7 +275,7 @@ than 50% or 20% fewer nuclei), a cell-count proxy that cannot separate cell deat
 ![Q2 Best Path per Feature Source and Label, A549](../figures/fig_q2_summary.png)
 
 *Note.* Bars show the out-of-fold score of the best path on the A549 plates, which were also used to choose it (§3); error bars are
-95% confidence intervals.
+95% confidence intervals. The first two panels start near 0.85, which magnifies their small differences.
 
 Table: Q2 Cross-Validated Results on the A549 Plates, Best Path per Feature Source [95% CI]
 
@@ -278,6 +296,9 @@ Table: Q2 Cross-Validated Results on the A549 Plates, Best Path per Feature Sour
 - Robustness: leave-one-plate-out AUC (virtual, treated vs DMSO) 0.667/0.727; fixed-score label-shuffle p 0.005 (labels shuffled 200 times against
   the fixed out-of-fold scores, without refitting, re-searching or keeping compounds together, so it checks the score, not the
   search; 0.005 is the smallest possible); a Bayesian logistic model on the same pipeline gives AUC 0.707 [0.652, 0.755].
+- Virtual stains are computed from bright-field alone, so they add no new measurement; they reorganise the information already in
+  the image into predicted cell structures, which the downstream features and classifiers appear to use more easily. Combining
+  bright-field with virtual stains gave no clear further gain (the information may be redundant).
 - Best virtual pipeline (treated vs DMSO): none → zscore → none → none → logistic_l2 → none → class_weights.
 
 # 6. Q3: Single-cell phenotypes
@@ -285,7 +306,7 @@ Table: Q2 Cross-Validated Results on the A549 Plates, Best Path per Feature Sour
 ## Segmentation
 
 The segmentation search on the winner's virtual stains ran 31 paths (9 completed; time limit 4 h); the exclusion rule
-removed channels=dna_only, seg_model=cellpose_cyto2, diameter=auto and diameter=10. The best path is Cellpose [8] cyto3 on all
+removed channels=dna_only, seg_model=cellpose_cyto2, diameter=auto and diameter=10. The best path is Cellpose [8] with the cyto3 model [9] on all
 five channels (the same path as in the first search), with an F1 (virtual vs real masks, IoU ≥ 0.5) of 0.979; Figure 5 shows it
 on one test field. On all 1,536 test fields: F1 0.979 [0.978, 0.980], AP over IoU 0.5–0.95 0.773, Dice of matched cells 0.946;
 cells per field Lin's CCC 0.999 [0.999, 0.999], Bland–Altman bias -1.05 (limits [-5.7, 3.6]); median per-cell feature CCC 0.886. These measure agreement between cells segmented on real and on virtual stains by
@@ -307,7 +328,7 @@ comparison does not show where the signal lies.
 # 7. Q4: Organ-on-a-chip quality control
 
 The target is the expert good/bad rating of each OoC microscopy image in the dataset [6]. 1003 paths covered preprocessing (crop,
-resize, tiles, CLAHE), 9 representations (hand-crafted, GLCM/LBP texture, ResNet50, EfficientNet-B3, ConvNeXt, DINOv2 [9] S/B/L,
+resize, tiles, CLAHE), 9 representations (hand-crafted, GLCM/LBP texture, ResNet50, EfficientNet-B3, ConvNeXt, DINOv2 [10] S/B/L,
 CLIP), fusion with the hand-crafted features, reduction and 8 classifiers, plus 24 fine-tuning paths; virtual-stain features, a
 per-cell-type scope and a Bayesian logistic classifier were configured but not run. The exclusion rule removed preprocessing=resize, representation=resnet50, representation=efficientnet_b3,
 representation=convnext_tiny, representation=clip_vit_b16, model=random_forest and model=knn. Figure 6 summarises the results.
@@ -324,6 +345,11 @@ representation=convnext_tiny, representation=clip_vit_b16, model=random_forest a
   independent experiments was not verified.
 - Per cell type: A549 0.829, CACO 0.852, HPMEC 0.859, HSAEC 0.867, HUVEC 0.971, NHBE 0.936. Cell type alone predicts quality at
   AUC 0.569, which suggests that the model does not merely recognise cell types.
+- Check of the guided search: 1,613 of the 2,176 valid paths of the searched tree (a random 74%, 81 minutes on 10 CPU
+  workers; `tools/q4_exhaustive.py`) were each fitted from scratch. The guided search's winner ranked 2nd (AUC 0.8618);
+  the best path, AUC 0.8624, differs only by skipping the correlation filter, and 9 paths were within 0.005 of it. Re-scored
+  here, the winner's AUC is 0.862 rather than the 0.865 of the original search with the same path and code; the difference was not
+  investigated (it may come from library versions).
 - Bayesian check (PyMC logistic regression, §3) on the best path's features: AUC 0.812; its predictive uncertainty did not flag
   errors (mean standard deviation of the logit 0.251 on wrong and 0.264 on right predictions).
 - Fine-tuning a CNN (best of 24 paths) reached 0.827: with ~3,000 images, a frozen self-supervised encoder outperformed fine-tuning in this search.
@@ -394,11 +420,6 @@ normalisation of one Q2 pipeline uses the new plate's DMSO control wells (or the
 the web demo, which sees one field at a time). Speed on a CPU: in a clean-install test on 4 CPU cores, 14 fields and 6 chip images took 251 s without test-time augmentation, about 20 s
 per field for Q1–Q3 including the download.
 
-## Not demonstrated
-
-Q1–Q3 were developed on Cell Painting plates, not on OoC devices, and longitudinal virtual staining of living chips was not tested.
-Q4 analyses a different input from Q1–Q3, and no public dataset pairing OoC images with Cell Painting stains of the same samples could
-be identified as of October 2026. Using Q4 as a quality gate before imaging is a proposed use in a lab, not something tested here.
 
 # 10. Optimisation and overfitting
 
@@ -411,7 +432,11 @@ effect (AUC 0.589 → 0.701), so more data might help; for Q1 the 100% checkpoin
 confounded, whereas Q3 segmentation appeared saturated already at 25% (Figure 8B). Scores on data excluded from the final fit stayed
 close to the scores used to choose the paths, with the largest drops for Q2 viability (R² 0.976 → 0.942) and Q4 (AUC 0.865 → 0.800),
 and a small gain for the Q2 non-toxic effect (Figure 8C); as those data were used for path selection, this is not a test of
-selection optimism (§3).
+selection optimism (§3), and no intervals are shown for these changes. In short: little training–validation overfitting was
+observed for the Q1 U-Nets, while overfitting from choosing among many paths (selection optimism) remains possible and is not
+quantified for Q2–Q4. For Q4, the check of §7 bounds part of it: the top paths of the searched tree score within 0.005 of each
+other, so the choice among them changes the score little; a nested evaluation of the whole search, or a new held-out dataset,
+would be needed to measure it.
 
 ![Overfitting and Underfitting Checks](../figures/fig_fit.png)
 
@@ -422,7 +447,7 @@ segmentation F1; for Q1 the 100% checkpoint also trains for 4,000 steps instead 
 (validation for Q1, cross-validation for Q2–Q4) and the score on data excluded from the final fit but used earlier to choose the
 path (Table 5); for Q1 the held-out value is the mean test pixel r of the five stains on held-out compounds.
 
-# 11. Limitations and path to organ-on-a-chip use
+# 11. Limitations and future research
 
 - Virtual staining was trained on plates. A second cell line needed its own training plate, and even then mitochondria transferred
   poorly; on the real chip images tested, zero-shot staining was not reliable. A calibration set of stained chips would likely be needed
@@ -433,9 +458,22 @@ path (Table 5); for Q1 the held-out value is the mean test pixel r of the five 
   nested evaluation of the searches was run, and the Q2 permutation check does not refit or re-search (§3).
 - Labels: toxicity and viability are nuclei-count proxies; Q3 compares two algorithmic segmentations, not human annotations; Q4
   predicts expert image ratings, not device performance.
+- Not demonstrated: q1–Q3 were developed on Cell Painting plates, not on OoC devices, and longitudinal virtual staining of living chips was not tested. Q4 analyses a different input from Q1–Q3, and no public dataset pairing OoC images with Cell Painting stains of the same samples could be identified as of October 2026. Using Q4 as a quality gate before imaging is a proposed use in a lab, not something tested here.
 - CPJUMP1 has one dose per compound, so dose–response could not be modelled.
 - Search limitations: duplicate proposals in early runs (fixed), time limits on some searches, and a strict exclusion rule that can
   remove middling options.
+
+Future research, in order of what it would establish:
+
+- Measure selection optimism: a nested evaluation of each search (the whole path search repeated inside every training fold) or a
+  new dataset never used for any choice, with grouped permutation tests that refit and re-search.
+- Validate on organ-on-a-chip samples: a calibration set of chips imaged in bright-field and then stained, to fine-tune virtual
+  staining and test Q2/Q3 on chips; then repeated bright-field imaging of living chips over days, with endpoint staining kept as a
+  check.
+- Finer learning curves for Q1 (validation scored more often within each phase) and training-versus-validation scores for the
+  winning Q2 and Q4 pipelines.
+- Dose–response and time-course data, to go beyond one dose per compound; prior-sensitivity and convergence checks for the Bayesian
+  models; and the Q4 options that were configured but not run (virtual-stain features, per-cell-type models).
 
 A possible deployment, not tested here: (1) stain a few calibration chips at the endpoint and fine-tune; (2) image every chip in bright-field (ideally a small
 z-stack) every day; (3) run Q2/Q3 readouts on virtual stains and Q4 quality control on the raw image; (4) keep endpoint staining as
@@ -458,16 +496,12 @@ Table: Reproduction Commands
 | Web demo (Q1–Q4) | `cd apps/web_demo && python app.py` (Gradio, opens in the browser) | CPU, ~25 s per field (without test-time augmentation) |
 | Full Q1 / Q2 / Q3 / Q4 / U2OS | commands in the README; Kaggle notebooks generated by `kaggle_jobs/build.py` | free Kaggle T4 GPUs + CPU; time limits in Table 3 |
 
-## Inputs and outputs
-
 Inputs: CPJUMP1 fields (3 bright-field planes + 5 stains, 16-bit TIFF, streamed from the public S3 archive and packed per
 plate by `download.py`); OoC microscopy images (Zenodo). Outputs: virtual stains (5 × 540 × 540 per field), per-field features
 (`site_features.csv`), per-cell tables, search logs (`*_paths.csv`, one row per path with its score at each checkpoint) and the
 assessment reports (`*_report.json`); `results/` holds all of them except per-cell tables.
 
-## External services
-
-Only free, public ones (Cell Painting Gallery S3, Zenodo, the GitHub release for the weights). Everything runs
+External services: only free, public ones (Cell Painting Gallery S3, Zenodo, the GitHub release for the weights). Everything runs
 on a local machine; without a GPU training is slow, but the demo, the system, the notebook and the assessments run on a CPU. The long
 searches were run as Kaggle notebooks (`kaggle_jobs/build.py`), which read intermediate inputs kept private in the team's Kaggle account: they are a
 record of how the runs were launched; the local commands are the reproducible path. The repository is designed to rebuild every
@@ -480,7 +514,7 @@ Q3/Q4 models also needs the per-cell tables and chip embeddings (2 GB), recreate
 - Team tmgf: one member, tiagomgfernandes (Kaggle), who also leads the team.
 - Code (MIT): https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip. Search configs `sweep/configs/*.yaml`;
   engine `sweep/engine.py`; every path's scores in `results/`.
-- Data: CPJUMP1 (cpg0000, CC0) [5], available from the Cell Painting Gallery [10] on the Registry of Open Data on AWS; the AWS
+- Data: CPJUMP1 (cpg0000, CC0) [5], available from the Cell Painting Gallery [11] on the Registry of Open Data on AWS; the AWS
   Open Data Sponsorship Program is thanked for sponsoring the data storage. OoC Image Dataset (Zenodo 10203721, CC BY 4.0) [6],
   used to train, select and evaluate the Q4 models; 8 example images are redistributed as centre crops in `apps/web_demo/examples` with attribution,
   as CC BY 4.0 permits. No personal or clinical data.
@@ -493,22 +527,24 @@ Q3/Q4 models also needs the per-cell tables and chip embeddings (2 GB), recreate
 
 1. Ingber DE. Human organs-on-chips for disease modelling, drug development and personalized medicine. Nat Rev Genet.
    2022;23(8):467–91.
-2. Christiansen EM, Yang SJ, Ando DM, Javaherian A, Skibinski G, Lipnick S, et al. In silico labeling: predicting fluorescent
-   labels in unlabeled images. Cell. 2018;173(3):792–803.
-3. Cross-Zamirski JO, Mouchet E, Williams G, Schönlieb CB, Turkki R, Wang Y. Label-free prediction of cell painting from
-   brightfield images. Sci Rep. 2022;12:10001.
-4. Bray MA, Singh S, Han H, Davis CT, Borgeson B, Hartland C, et al. Cell Painting, a high-content image-based assay for
+2. Bray MA, Singh S, Han H, Davis CT, Borgeson B, Hartland C, et al. Cell Painting, a high-content image-based assay for
    morphological profiling using multiplexed fluorescent dyes. Nat Protoc. 2016;11(9):1757–74.
+3. Christiansen EM, Yang SJ, Ando DM, Javaherian A, Skibinski G, Lipnick S, et al. In silico labeling: predicting fluorescent
+   labels in unlabeled images. Cell. 2018;173(3):792–803.e19.
+4. Cross-Zamirski JO, Mouchet E, Williams G, Schönlieb CB, Turkki R, Wang Y. Label-free prediction of cell painting from
+   brightfield images. Sci Rep. 2022;12:10001.
 5. Chandrasekaran SN, Cimini BA, Goodale A, Miller L, Kost-Alimova M, Jamali N, et al. Three million images and morphological
    profiles of cells treated with matched chemical and genetic perturbations. Nat Methods. 2024;21(6):1114–21.
 6. Movčana V, Strods A, Narbute K, Rūmnieks F, Rimša R, Mozolevskis G, et al. Organ-on-a-chip (OOC) image dataset for machine
    learning and tissue model evaluation. Data. 2024;9(2):28. doi:10.3390/data9020028. Dataset: Zenodo,
    doi:10.5281/zenodo.10203721.
 7. Akiba T, Sano S, Yanase T, Ohta T, Koyama M. Optuna: a next-generation hyperparameter optimization framework. In: Proceedings
-   of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. New York: ACM; 2019. p. 2623–31.
+   of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. New York: ACM; 2019. p. 2623–31. doi:10.1145/3292500.3330701.
 8. Stringer C, Wang T, Michaelos M, Pachitariu M. Cellpose: a generalist algorithm for cellular segmentation. Nat Methods.
    2021;18(1):100–6.
-9. Oquab M, Darcet T, Moutakanni T, Vo H, Szafraniec M, Khalidov V, et al. DINOv2: learning robust visual features without
-   supervision. Trans Mach Learn Res. 2024.
-10. Weisbart E, Kumar A, Arevalo J, Carpenter AE, Cimini BA, Singh S. Cell Painting Gallery: an open resource for image-based
+9. Stringer C, Pachitariu M. Cellpose3: one-click image restoration for improved cellular segmentation. Nat Methods.
+   2025;22(3):592–9. doi:10.1038/s41592-025-02595-5.
+10. Oquab M, Darcet T, Moutakanni T, Vo H, Szafraniec M, Khalidov V, et al. DINOv2: learning robust visual features without
+    supervision. Trans Mach Learn Res. 2024.
+11. Weisbart E, Kumar A, Arevalo J, Carpenter AE, Cimini BA, Singh S. Cell Painting Gallery: an open resource for image-based
     profiling. Nat Methods. 2024;21(10):1775–7. doi:10.1038/s41592-024-02399-z.
