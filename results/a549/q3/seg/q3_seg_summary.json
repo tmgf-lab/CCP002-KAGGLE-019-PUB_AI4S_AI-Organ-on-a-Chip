@@ -1,0 +1,249 @@
+{
+ "name": "q3_seg",
+ "budget": 50,
+ "evaluated": 31,
+ "completed_100pct": 9,
+ "skipped_excluded": 20,
+ "skipped_duplicate": 10,
+ "excluded_options": [
+  {
+   "node": "channels",
+   "option": "dna_only",
+   "bad": 4,
+   "uses": 4
+  },
+  {
+   "node": "seg_model",
+   "option": "cellpose_cyto2",
+   "bad": 4,
+   "uses": 6
+  },
+  {
+   "node": "diameter",
+   "option": "auto",
+   "bad": 4,
+   "uses": 4
+  },
+  {
+   "node": "diameter",
+   "option": "10",
+   "bad": 4,
+   "uses": 4
+  }
+ ],
+ "option_coverage": {
+  "channels": {
+   "dna_only": 4,
+   "dna+agp": 12,
+   "all_five": 15
+  },
+  "preprocessing": {
+   "none": 19,
+   "background_subtraction": 12
+  },
+  "seg_model": {
+   "cellpose_nuclei": 3,
+   "cellpose_cyto3": 21,
+   "cellpose_cyto2": 6,
+   "stardist": 1,
+   "otsu_watershed": 0
+  },
+  "diameter": {
+   "auto": 4,
+   "10": 4,
+   "14": 6,
+   "18": 5,
+   "30": 12
+  },
+  "flow_threshold": {
+   "0.4": 16,
+   "0.6": 15
+  },
+  "cellprob_threshold": {
+   "-1": 15,
+   "0": 16
+  }
+ },
+ "best": [
+  {
+   "trial": 6,
+   "state": "COMPLETE",
+   "value": 0.9789703099011604,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "none",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.4",
+   "cellprob_threshold": "-1",
+   "score_100": 0.9789703099011604,
+   "score_25": 0.979809806665334,
+   "score_50": 0.979135868031136,
+   "seconds_100": 1238.252342224121,
+   "seconds_25": 308.8160979747772,
+   "seconds_50": 616.7144317626953
+  },
+  {
+   "trial": 16,
+   "state": "COMPLETE",
+   "value": 0.9788506861291671,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "none",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.4",
+   "cellprob_threshold": "0",
+   "score_100": 0.9788506861291671,
+   "score_25": 0.9792100579391828,
+   "score_50": 0.978766113304476,
+   "seconds_100": 1171.2259786128998,
+   "seconds_25": 289.374299287796,
+   "seconds_50": 579.5794522762299
+  },
+  {
+   "trial": 23,
+   "state": "COMPLETE",
+   "value": 0.9781425998556389,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "none",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.6",
+   "cellprob_threshold": "-1",
+   "score_100": 0.9781425998556389,
+   "score_25": 0.9790950824556993,
+   "score_50": 0.9783303165092773,
+   "seconds_100": 1220.9803037643433,
+   "seconds_25": 298.84485697746277,
+   "seconds_50": 602.8483667373657
+  },
+  {
+   "trial": 39,
+   "state": "COMPLETE",
+   "value": 0.9781016598012499,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "background_subtraction",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.4",
+   "cellprob_threshold": "0",
+   "score_100": 0.9781016598012499,
+   "score_25": 0.9789691914565354,
+   "score_50": 0.978120653812046,
+   "seconds_100": 1533.2001564502716,
+   "seconds_25": 381.5916590690613,
+   "seconds_50": 765.503889799118
+  },
+  {
+   "trial": 76,
+   "state": "COMPLETE",
+   "value": 0.976955006277758,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "none",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.6",
+   "cellprob_threshold": "0",
+   "score_100": 0.976955006277758,
+   "score_25": 0.9776524313370253,
+   "score_50": 0.9769987711415251,
+   "seconds_100": 1210.4483349323273,
+   "seconds_25": 301.661372423172,
+   "seconds_50": 603.3282799720764
+  },
+  {
+   "trial": 25,
+   "state": "COMPLETE",
+   "value": 0.9756083538154169,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "background_subtraction",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.6",
+   "cellprob_threshold": "0",
+   "score_100": 0.9756083538154169,
+   "score_25": 0.9763522540748941,
+   "score_50": 0.9752923009044783,
+   "seconds_100": 1517.5852773189545,
+   "seconds_25": 377.99014496803284,
+   "seconds_50": 756.5514807701111
+  },
+  {
+   "trial": 38,
+   "state": "PRUNED",
+   "value": 0.9735954446598827,
+   "stopped_at": 2.0,
+   "channels": "all_five",
+   "preprocessing": "background_subtraction",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "18",
+   "flow_threshold": "0.6",
+   "cellprob_threshold": "0",
+   "score_100": NaN,
+   "score_25": 0.9742323222837825,
+   "score_50": 0.9735954446598827,
+   "seconds_100": NaN,
+   "seconds_25": 559.856253862381,
+   "seconds_50": 1135.5632441043854
+  },
+  {
+   "trial": 3,
+   "state": "COMPLETE",
+   "value": 0.971793975453791,
+   "stopped_at": 3.0,
+   "channels": "all_five",
+   "preprocessing": "none",
+   "seg_model": "cellpose_cyto2",
+   "diameter": "18",
+   "flow_threshold": "0.4",
+   "cellprob_threshold": "0",
+   "score_100": 0.971793975453791,
+   "score_25": 0.9731722340677564,
+   "score_50": 0.9722260565760226,
+   "seconds_100": 1918.1507849693298,
+   "seconds_25": 473.124755859375,
+   "seconds_50": 952.1080501079559
+  },
+  {
+   "trial": 55,
+   "state": "PRUNED",
+   "value": 0.9708571779616564,
+   "stopped_at": 2.0,
+   "channels": "all_five",
+   "preprocessing": "background_subtraction",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "14",
+   "flow_threshold": "0.4",
+   "cellprob_threshold": "-1",
+   "score_100": NaN,
+   "score_25": 0.9711760834821849,
+   "score_50": 0.9708571779616564,
+   "seconds_100": NaN,
+   "seconds_25": 833.2523806095123,
+   "seconds_50": 1676.4730632305145
+  },
+  {
+   "trial": 2,
+   "state": "COMPLETE",
+   "value": 0.9691670458655652,
+   "stopped_at": 3.0,
+   "channels": "dna+agp",
+   "preprocessing": "none",
+   "seg_model": "cellpose_cyto3",
+   "diameter": "30",
+   "flow_threshold": "0.6",
+   "cellprob_threshold": "-1",
+   "score_100": 0.9691670458655652,
+   "score_25": 0.9685619973034544,
+   "score_50": 0.9685444693572496,
+   "seconds_100": 1265.5222733020782,
+   "seconds_25": 314.73843789100647,
+   "seconds_50": 631.0846633911133
+  }
+ ]
+}

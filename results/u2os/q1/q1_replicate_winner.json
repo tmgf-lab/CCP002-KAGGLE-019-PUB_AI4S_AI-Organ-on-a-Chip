@@ -1,0 +1,15 @@
+{
+ "source_winner": "final/t038",
+ "train_plates": [
+  "BR00117011"
+ ],
+ "run_dirs": [
+  "/kaggle/working/runs/q1_replicate/seed1",
+  "/kaggle/working/runs/q1_replicate/seed3"
+ ],
+ "inference": "seed_ensemble+tta",
+ "val_r": [
+  0.8802306938652925,
+  0.8948408499880839
+ ]
+}

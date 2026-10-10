@@ -1,0 +1,43 @@
+# Q2 - Toxicity and drug response from image features (tables, one row per well)
+# A path = source -> label -> cleaning -> transform -> selection -> reduction -> model -> calibration -> evaluation
+
+tree:
+  source:      [real, virtual, brightfield, brightfield+virtual]
+  label:       [toxic_0.5, toxic_0.8, viability, treated_vs_dmso]     # viability = regression; others = classification
+  cleaning:    [none, near_zero_variance, winsorise, plate_robust_z_vs_dmso]
+  transform:   [zscore, robust_z, yeo_johnson]
+  selection:   [none, correlation_filter_0.9, kbest_mutual_info, l1_lasso, stability_selection, drop_channel_block]
+  reduction:   [none, pca_95, pls]
+  model:
+    frequentist:      [logistic_unpenalised, logistic_l1, logistic_l2, logistic_elasticnet, mixed_logistic_plate, lda, naive_bayes]
+    bayesian:         [bayes_logistic_horseshoe, bayes_hierarchical_plate_compound]   # PyMC; run on the best 6 pipelines only
+    machine_learning: [svm_linear, svm_rbf, knn, random_forest, extra_trees, hist_gradient_boosting, xgboost]
+    deep_learning:    [mlp]                                  # 1-3 layers, width, dropout tuned
+    ensemble:         [stacking_best_per_family]
+  calibration: [none, platt, isotonic]
+  imbalance:   [class_weights, threshold_tuning]
+  evaluation:  [auc]                                         # r2 / lins_ccc for viability
+
+rules:
+  - "nuclei-count features are ALWAYS removed (labels are built from them)"
+  - "source=real/virtual/brightfield -> drop_channel_block only for stain sources"
+  - "selection and reduction are fitted inside each training fold only"
+  - "bayesian models -> only on the 6 best frequentist/ML pipelines (cost)"
+
+search:
+  method: bayesian_tpe
+  early_stopping: successive_halving
+  paths_to_try: 300
+  checkpoints:                 # nested subsets of wells; a compound's wells stay together
+    - {data: 25%}
+    - {data: 50%}
+    - {data: 100%}
+
+validation:
+  - "5-fold CV grouped by compound x 3 repeats, nested inner CV for hyperparameters (TPE)"
+  - "leave-one-plate-out: train on BR00117017, test on BR00117019 and vice versa"
+
+assessment:
+  frequentist: [auc_bootstrap_ci, pr_auc, brier, calibration, delong, mcnemar, permutation_test, holm_bh_correction]
+  bayesian:    [posterior_auc_difference, p_virtual_gt_brightfield, loo_waic]
+  interpretation: [coefficients_odds_ratios, permutation_importance, shap, selection_stability]

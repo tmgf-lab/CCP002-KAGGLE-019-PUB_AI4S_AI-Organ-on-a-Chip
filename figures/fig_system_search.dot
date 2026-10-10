@@ -1,0 +1,24 @@
+// Figure 1, bottom (zoom): what ⚙ stands for, the same model-selection procedure inside each of Q1, Q2, Q3 and Q4.
+digraph search {
+  graph [rankdir=TB, newrank=true, compound=true, bgcolor="#f7f6f2", fontname="DejaVu Sans", nodesep=0.25, ranksep=0.3, pad=0.15];
+  node  [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=13, color="#52514e", fillcolor="#ffffff",
+         fontcolor="#0b0b0b", penwidth=1.2, margin="0.12,0.06"];
+  edge  [color="#52514e", arrowsize=0.7, penwidth=1.1];
+  subgraph cluster_path {
+    label="One path = one option chosen at each node of the question's tree (Table 3)"; labeljust=l; fontsize=12;
+    fontcolor="#52514e"; style="rounded,filled"; fillcolor="#ecebe6"; color="#d6d4cf";
+    n_in    [label="Input\ndata, source"];
+    n_proc  [label="Processing\ncleaning, transform"];
+    n_model [label="Model\narchitecture, classifier"];
+    n_expl  [label="Exploration\nsettings"];
+    n_eval  [label="Evaluation\nvalidation metric"];
+    n_in -> n_proc -> n_model -> n_expl -> n_eval;
+  }
+  search [label="Guided path search\nmany paths, 25% → 50% → 100% of data"];
+  stats  [label="Validation statistics\nfrequentist + Bayesian"];
+  final  [label="Final model of the question\nwinning path, fitted once", penwidth=1.6];
+  n_in -> search [ltail=cluster_path, label="  many paths are tried", fontname="DejaVu Sans", fontsize=12, fontcolor="#52514e"];
+  search -> stats -> final;
+  {rank=same; n_in; n_proc; n_model; n_expl; n_eval}
+  {rank=same; search; stats; final}
+}

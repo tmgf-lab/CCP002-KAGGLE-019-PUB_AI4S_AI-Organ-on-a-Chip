@@ -1,0 +1,6 @@
+source "$(dirname "$0")/common.sh"
+say "Q1: guided path search on the A549 training plate (demo tree that fits a 6 GB laptop GPU, short training)"
+run "export VCP_RUNS=/tmp/demo/q1 VCP_Q1_CONFIG=q1_demo.yaml"
+run "python -m sweep.q1_translation init"
+run "python -m sweep.q1_translation search --gpu 0 --trials 6"
+run "python show.py q1search /tmp/demo/q1"

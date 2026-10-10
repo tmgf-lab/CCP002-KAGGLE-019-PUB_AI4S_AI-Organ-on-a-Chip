@@ -1,0 +1,255 @@
+{
+ "name": "q3_down",
+ "budget": 200,
+ "evaluated": 65,
+ "completed_100pct": 20,
+ "skipped_excluded": 110,
+ "skipped_duplicate": 105,
+ "excluded_options": [
+  {
+   "node": "features",
+   "option": "morphology+intensity+haralick",
+   "bad": 4,
+   "uses": 5
+  },
+  {
+   "node": "features",
+   "option": "+zernike",
+   "bad": 4,
+   "uses": 4
+  },
+  {
+   "node": "processing",
+   "option": "correlation_filter_0.9",
+   "bad": 4,
+   "uses": 5
+  },
+  {
+   "node": "clustering",
+   "option": "leiden",
+   "bad": 4,
+   "uses": 4
+  },
+  {
+   "node": "clustering",
+   "option": "louvain",
+   "bad": 4,
+   "uses": 4
+  },
+  {
+   "node": "clustering",
+   "option": "hdbscan",
+   "bad": 4,
+   "uses": 5
+  },
+  {
+   "node": "n_states_choice",
+   "option": "bic",
+   "bad": 4,
+   "uses": 4
+  }
+ ],
+ "option_coverage": {
+  "features": {
+   "morphology": 32,
+   "morphology+intensity": 24,
+   "morphology+intensity+haralick": 5,
+   "+zernike": 4
+  },
+  "processing": {
+   "standardise": 24,
+   "robust_z_vs_dmso": 18,
+   "correlation_filter_0.9": 5,
+   "pca": 18
+  },
+  "embedding": {
+   "pca": 38,
+   "umap": 27
+  },
+  "clustering": {
+   "kmeans_4_16": 25,
+   "gmm_bic": 3,
+   "leiden": 4,
+   "louvain": 4,
+   "hdbscan": 5,
+   "hierarchical_ward": 24
+  },
+  "n_states_choice": {
+   "silhouette": 40,
+   "bic": 4,
+   "bootstrap_stability": 21
+  }
+ },
+ "best": [
+  {
+   "trial": 85,
+   "state": "COMPLETE",
+   "value": 0.7445279930910563,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "robust_z_vs_dmso",
+   "embedding": "pca",
+   "clustering": "hierarchical_ward",
+   "n_states_choice": "silhouette",
+   "score_100": 0.7445279930910563,
+   "score_25": 0.6230813346686224,
+   "score_50": 0.7385286619888295,
+   "seconds_100": 19.617712020874023,
+   "seconds_25": 6.476146459579468,
+   "seconds_50": 13.254764556884766
+  },
+  {
+   "trial": 15,
+   "state": "COMPLETE",
+   "value": 0.7197423564258567,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "robust_z_vs_dmso",
+   "embedding": "pca",
+   "clustering": "kmeans_4_16",
+   "n_states_choice": "silhouette",
+   "score_100": 0.7197423564258567,
+   "score_25": 0.7137328360874942,
+   "score_50": 0.7197838309078577,
+   "seconds_100": 3.3487558364868164,
+   "seconds_25": 0.9695367813110352,
+   "seconds_50": 2.039649248123169
+  },
+  {
+   "trial": 79,
+   "state": "COMPLETE",
+   "value": 0.7187905757723901,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "pca",
+   "embedding": "pca",
+   "clustering": "hierarchical_ward",
+   "n_states_choice": "silhouette",
+   "score_100": 0.7187905757723901,
+   "score_25": 0.6867433637257365,
+   "score_50": 0.6920019290997652,
+   "seconds_100": 18.933063745498657,
+   "seconds_25": 6.181195497512817,
+   "seconds_50": 12.425604343414307
+  },
+  {
+   "trial": 84,
+   "state": "COMPLETE",
+   "value": 0.7187905757723901,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "standardise",
+   "embedding": "pca",
+   "clustering": "hierarchical_ward",
+   "n_states_choice": "silhouette",
+   "score_100": 0.7187905757723901,
+   "score_25": 0.6867433637257365,
+   "score_50": 0.6920019290997652,
+   "seconds_100": 19.979877471923828,
+   "seconds_25": 7.025680303573608,
+   "seconds_50": 13.455911636352539
+  },
+  {
+   "trial": 63,
+   "state": "COMPLETE",
+   "value": 0.6955239248107216,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "standardise",
+   "embedding": "pca",
+   "clustering": "kmeans_4_16",
+   "n_states_choice": "silhouette",
+   "score_100": 0.6955239248107216,
+   "score_25": 0.6970168346071692,
+   "score_50": 0.7059543646006868,
+   "seconds_100": 4.024630546569824,
+   "seconds_25": 1.1858484745025635,
+   "seconds_50": 2.4463932514190674
+  },
+  {
+   "trial": 98,
+   "state": "COMPLETE",
+   "value": 0.6955239248107216,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "pca",
+   "embedding": "pca",
+   "clustering": "kmeans_4_16",
+   "n_states_choice": "silhouette",
+   "score_100": 0.6955239248107216,
+   "score_25": 0.6970168346071692,
+   "score_50": 0.7059543646006868,
+   "seconds_100": 4.139965772628784,
+   "seconds_25": 1.1536054611206055,
+   "seconds_50": 2.5901803970336914
+  },
+  {
+   "trial": 3,
+   "state": "COMPLETE",
+   "value": 0.6423879391537922,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "standardise",
+   "embedding": "umap",
+   "clustering": "hdbscan",
+   "n_states_choice": "silhouette",
+   "score_100": 0.6423879391537922,
+   "score_25": 0.647160848861637,
+   "score_50": 0.6280714812992089,
+   "seconds_100": 154.48014211654663,
+   "seconds_25": 45.605061531066895,
+   "seconds_50": 89.80939722061157
+  },
+  {
+   "trial": 72,
+   "state": "COMPLETE",
+   "value": 0.6182793617095594,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "robust_z_vs_dmso",
+   "embedding": "pca",
+   "clustering": "kmeans_4_16",
+   "n_states_choice": "bootstrap_stability",
+   "score_100": 0.6182793617095594,
+   "score_25": 0.6157641922768674,
+   "score_50": 0.613017118979358,
+   "seconds_100": 2.7193493843078613,
+   "seconds_25": 0.7644598484039307,
+   "seconds_50": 1.6153504848480225
+  },
+  {
+   "trial": 37,
+   "state": "COMPLETE",
+   "value": 0.6103590905315902,
+   "stopped_at": 3.0,
+   "features": "morphology",
+   "processing": "robust_z_vs_dmso",
+   "embedding": "umap",
+   "clustering": "hierarchical_ward",
+   "n_states_choice": "silhouette",
+   "score_100": 0.6103590905315902,
+   "score_25": 0.5858423409951372,
+   "score_50": 0.6016361906691935,
+   "seconds_100": 180.3828296661377,
+   "seconds_25": 27.540129899978638,
+   "seconds_50": 106.7002227306366
+  },
+  {
+   "trial": 4,
+   "state": "PRUNED",
+   "value": 0.6016361906691935,
+   "stopped_at": 2.0,
+   "features": "morphology",
+   "processing": "robust_z_vs_dmso",
+   "embedding": "umap",
+   "clustering": "hierarchical_ward",
+   "n_states_choice": "bootstrap_stability",
+   "score_100": NaN,
+   "score_25": 0.5858423409951372,
+   "score_50": 0.6016361906691935,
+   "seconds_100": NaN,
+   "seconds_25": 48.46206521987915,
+   "seconds_50": 125.18696737289429
+  }
+ ]
+}

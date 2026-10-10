@@ -1,0 +1,17 @@
+label,source,metric,value,ci_low,ci_high,path
+toxic_0.5,real,AUC,0.9971717857344873,0.992307289327945,0.9997982276802917,plate_robust_z_vs_dmso -> yeo_johnson -> none -> pls -> svm_rbf -> none -> threshold_tuning
+toxic_0.5,virtual,AUC,0.9916284857740822,0.9812439378367688,0.998532820683517,near_zero_variance -> zscore -> drop_channel_block -> none -> logistic_l2 -> none -> class_weights
+toxic_0.5,brightfield,AUC,0.982465071553821,0.96915879114939,0.993009205039137,near_zero_variance -> zscore -> correlation_filter_0.9 -> pls -> svm_rbf -> none -> class_weights
+toxic_0.5,brightfield+virtual,AUC,0.9955314214604898,0.9901174104372091,0.998915503925732,near_zero_variance -> zscore -> none -> none -> random_forest -> none -> threshold_tuning
+toxic_0.8,real,AUC,0.98909047314578,0.9805334080052125,0.9951734350173917,none -> zscore -> none -> none -> logistic_l2 -> none -> class_weights
+toxic_0.8,virtual,AUC,0.9786604859335037,0.9586950238313068,0.9932168067161764,plate_robust_z_vs_dmso -> zscore -> none -> none -> logistic_unpenalised -> platt -> class_weights
+toxic_0.8,brightfield,AUC,0.9333839514066496,0.9033218194302514,0.9593085939724542,none -> zscore -> none -> none -> svm_linear -> platt -> class_weights
+toxic_0.8,brightfield+virtual,AUC,0.9735453964194374,0.9493258261453591,0.990292957537963,plate_robust_z_vs_dmso -> robust_z -> none -> none -> stacking_best_per_family -> none -> threshold_tuning
+viability,real,R2,0.9854460577084297,,,none -> zscore -> none -> none -> logistic_l2
+viability,virtual,R2,0.9348534115491259,,,winsorise -> zscore -> drop_channel_block -> none -> svm_linear
+viability,brightfield,R2,0.8171654540286064,,,near_zero_variance -> zscore -> none -> none -> stacking_best_per_family
+viability,brightfield+virtual,R2,0.9456908257104603,,,winsorise -> zscore -> drop_channel_block -> none -> svm_linear
+treated_vs_dmso,real,AUC,0.5158797554347826,0.4311215232510904,0.6032856500441163,winsorise -> yeo_johnson -> none -> pls -> naive_bayes -> platt -> threshold_tuning
+treated_vs_dmso,virtual,AUC,0.4817425271739131,0.39956490215331325,0.5602778096666717,none -> zscore -> none -> none -> logistic_l2 -> none -> class_weights
+treated_vs_dmso,brightfield,AUC,0.4193699048913043,0.33955908275489005,0.5003423904862261,none -> zscore -> none -> none -> logistic_l1 -> none -> class_weights
+treated_vs_dmso,brightfield+virtual,AUC,0.41193953804347827,0.3306564228750194,0.4993063375032219,plate_robust_z_vs_dmso -> zscore -> drop_channel_block -> pls -> naive_bayes -> isotonic -> threshold_tuning

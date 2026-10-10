@@ -1,0 +1,2 @@
+-r ../../requirements.txt   # the repository requirements (torch, numpy, scikit-image, tifffile, imagecodecs, ...)
+gradio==5.50.0

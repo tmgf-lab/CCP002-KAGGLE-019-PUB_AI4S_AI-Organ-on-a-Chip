@@ -1,0 +1,22 @@
+# Q1 demo tree for the video: same engine and code as q1_translation.yaml, a smaller tree and short training so that a
+# full search (25% -> 50% -> 100% checkpoints, successive halving) finishes in minutes on a 6 GB laptop GPU.
+tree:
+  data:          [brightfield_a549]
+  transform:     [plate_scaling, image_scaling+augmentation]
+  model:         [unet]
+  exploration:
+    width:       [16, 32]
+    depth:       [4]
+    attention:   [off, on]
+    upsampling:  [transpose, bilinear]
+
+search:
+  method: bayesian_tpe
+  early_stopping: successive_halving
+  paths_to_try: 6
+  parallel: 1
+  time_limit_hours: 0.25
+  checkpoints:
+    - {data: 25%,  steps: 60}
+    - {data: 50%,  steps: 60}
+    - {data: 100%, steps: 120}

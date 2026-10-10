@@ -1,0 +1,297 @@
+{
+ "pixel": [
+  {
+   "group": "DMSO",
+   "channel": "AGP",
+   "pearson": 0.894,
+   "ssim": 0.887,
+   "psnr": 31.55900001525879
+  },
+  {
+   "group": "DMSO",
+   "channel": "DNA",
+   "pearson": 0.927,
+   "ssim": 0.939,
+   "psnr": 34.51499938964844
+  },
+  {
+   "group": "DMSO",
+   "channel": "ER",
+   "pearson": 0.908,
+   "ssim": 0.871,
+   "psnr": 30.47800064086914
+  },
+  {
+   "group": "DMSO",
+   "channel": "Mito",
+   "pearson": 0.647,
+   "ssim": 0.761,
+   "psnr": 32.2760009765625
+  },
+  {
+   "group": "DMSO",
+   "channel": "RNA",
+   "pearson": 0.95,
+   "ssim": 0.915,
+   "psnr": 31.680999755859375
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "AGP",
+   "pearson": 0.896,
+   "ssim": 0.899,
+   "psnr": 32.590999603271484
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "DNA",
+   "pearson": 0.92,
+   "ssim": 0.95,
+   "psnr": 35.70500183105469
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "ER",
+   "pearson": 0.917,
+   "ssim": 0.89,
+   "psnr": 31.172000885009766
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "Mito",
+   "pearson": 0.654,
+   "ssim": 0.752,
+   "psnr": 31.040000915527344
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "RNA",
+   "pearson": 0.953,
+   "ssim": 0.928,
+   "psnr": 32.810001373291016
+  },
+  {
+   "group": "seen cpds",
+   "channel": "AGP",
+   "pearson": 0.896,
+   "ssim": 0.901,
+   "psnr": 32.86600112915039
+  },
+  {
+   "group": "seen cpds",
+   "channel": "DNA",
+   "pearson": 0.92,
+   "ssim": 0.947,
+   "psnr": 35.29899978637695
+  },
+  {
+   "group": "seen cpds",
+   "channel": "ER",
+   "pearson": 0.908,
+   "ssim": 0.893,
+   "psnr": 31.624000549316406
+  },
+  {
+   "group": "seen cpds",
+   "channel": "Mito",
+   "pearson": 0.677,
+   "ssim": 0.762,
+   "psnr": 31.492000579833984
+  },
+  {
+   "group": "seen cpds",
+   "channel": "RNA",
+   "pearson": 0.949,
+   "ssim": 0.928,
+   "psnr": 32.95899963378906
+  }
+ ],
+ "nuclei_count": {
+  "all": {
+   "pearson": 0.8866849004352201,
+   "spearman": 0.9584715829185538,
+   "n_wells": 384
+  },
+  "DMSO": {
+   "pearson": 0.6643275670077463,
+   "spearman": 0.9293141020505022,
+   "n_wells": 64
+  },
+  "held-out cpds": {
+   "pearson": 0.9142156207838724,
+   "spearman": 0.959165185286476,
+   "n_wells": 56
+  },
+  "seen cpds": {
+   "pearson": 0.9044724842845895,
+   "spearman": 0.9674670238316581,
+   "n_wells": 264
+  }
+ },
+ "nuclei_agreement": {
+  "all": {
+   "pearson": {
+    "estimate": 0.8866849004352201,
+    "ci_low": 0.8218833296023361,
+    "ci_high": 0.9642911322588915
+   },
+   "lins_ccc": {
+    "estimate": 0.8780103733871507,
+    "ci_low": 0.7927146868795788,
+    "ci_high": 0.9632960082719064
+   },
+   "icc_2_1": 0.8782893895191443,
+   "bland_altman": {
+    "bias": -0.20833333333333334,
+    "loa_low": -37.59763096476294,
+    "loa_high": 37.18096429809627,
+    "proportional_bias_slope": 0.14849035490701018,
+    "proportional_bias_p": 5.996670888461663e-09,
+    "n": 384
+   },
+   "regression": {
+    "slope": 1.0202858908159322,
+    "slope_ci": [
+     0.9667628568597754,
+     1.0738089247720892
+    ],
+    "intercept": -1.9101558064839708,
+    "intercept_ci": [
+     -6.791679472626503,
+     2.971367859658561
+    ],
+    "r2": 0.786210112659816
+   }
+  },
+  "DMSO": {
+   "pearson": {
+    "estimate": 0.6643275670077463,
+    "ci_low": 0.5593049374954802,
+    "ci_high": 0.9861354514752909
+   },
+   "lins_ccc": {
+    "estimate": 0.5733196892351546,
+    "ci_low": 0.3520089356219913,
+    "ci_high": 0.9834546589152513
+   },
+   "icc_2_1": 0.5771675962559969,
+   "bland_altman": {
+    "bias": 0.203125,
+    "loa_low": -49.90275270467209,
+    "loa_high": 50.30900270467209,
+    "proportional_bias_slope": 0.6421399120033723,
+    "proportional_bias_p": 5.819085224023771e-08,
+    "n": 64
+   },
+   "regression": {
+    "slope": 1.15860606783445,
+    "slope_ci": [
+     0.8276719623694855,
+     1.4895401732994147
+    ],
+    "intercept": -16.265884746778724,
+    "intercept_ci": [
+     -51.21817433949607,
+     18.686404845938625
+    ],
+    "r2": 0.4413311162864318
+   }
+  },
+  "held-out cpds": {
+   "pearson": {
+    "estimate": 0.9142156207838724,
+    "ci_low": 0.7908621545461801,
+    "ci_high": 0.9982901417382763
+   },
+   "lins_ccc": {
+    "estimate": 0.9126314064538718,
+    "ci_low": 0.7744723063313184,
+    "ci_high": 0.9976863418041059
+   },
+   "icc_2_1": 0.9140574763848013,
+   "bland_altman": {
+    "bias": -0.8660714285714286,
+    "loa_low": -31.69906439802779,
+    "loa_high": 29.966921540884936,
+    "proportional_bias_slope": 0.05656368590599846,
+    "proportional_bias_p": 0.3302396891279007,
+    "n": 56
+   },
+   "regression": {
+    "slope": 0.9650877265911773,
+    "slope_ci": [
+     0.8483774660117849,
+     1.0817979871705696
+    ],
+    "intercept": 2.034140998175772,
+    "intercept_ci": [
+     -8.54746989144382,
+     12.615751887795364
+    ],
+    "r2": 0.8357902012852414
+   }
+  },
+  "seen cpds": {
+   "pearson": {
+    "estimate": 0.9044724842845895,
+    "ci_low": 0.8338545100347735,
+    "ci_high": 0.9845280199934893
+   },
+   "lins_ccc": {
+    "estimate": 0.8976737291500441,
+    "ci_low": 0.8040746594043215,
+    "ci_high": 0.983285653574932
+   },
+   "icc_2_1": 0.8980218019611675,
+   "bland_altman": {
+    "bias": -0.16856060606060605,
+    "loa_low": -35.31234158222822,
+    "loa_high": 34.975220370107,
+    "proportional_bias_slope": 0.12890255485526808,
+    "proportional_bias_p": 4.67632451099463e-06,
+    "n": 264
+   },
+   "regression": {
+    "slope": 1.0227755279489863,
+    "slope_ci": [
+     0.9641016486424672,
+     1.0814494072555054
+    ],
+    "intercept": -1.973089841321766,
+    "intercept_ci": [
+     -7.1053858679769775,
+     3.1592061853334457
+    ],
+    "r2": 0.8180704748279369
+   }
+  }
+ },
+ "phenotypic_activity": "not possible: one test plate (compound replicates are on other plates)",
+ "texture": {
+  "DNA": {
+   "texture_r": 0.814,
+   "fine_energy_ratio": 0.608,
+   "mean_intensity_r": 0.516
+  },
+  "ER": {
+   "texture_r": 0.918,
+   "fine_energy_ratio": 0.328,
+   "mean_intensity_r": 0.655
+  },
+  "RNA": {
+   "texture_r": 0.873,
+   "fine_energy_ratio": 0.56,
+   "mean_intensity_r": 0.535
+  },
+  "AGP": {
+   "texture_r": 0.894,
+   "fine_energy_ratio": 0.291,
+   "mean_intensity_r": 0.668
+  },
+  "Mito": {
+   "texture_r": 0.321,
+   "fine_energy_ratio": 0.29,
+   "mean_intensity_r": 0.093
+  }
+ }
+}

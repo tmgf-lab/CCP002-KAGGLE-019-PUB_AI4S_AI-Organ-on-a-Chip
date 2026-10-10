@@ -1,0 +1,1533 @@
+{
+ "results": {
+  "real|toxic_0.5": {
+   "path": {
+    "cleaning": "plate_robust_z_vs_dmso",
+    "transform": "yeo_johnson",
+    "selection": "none",
+    "reduction": "pls",
+    "model": "svm_rbf",
+    "calibration": "none",
+    "imbalance": "threshold_tuning"
+   },
+   "search_value": 0.9984402730157256,
+   "classification": {
+    "auc": {
+     "estimate": 0.9971717857344873,
+     "ci_low": 0.992307289327945,
+     "ci_high": 0.9997982276802917
+    },
+    "brier": null,
+    "calibration": null,
+    "note": "scores are not probabilities (decision function): Brier score and calibration not computed",
+    "prevalence": 0.221875,
+    "n": 320
+   },
+   "pr_auc": 0.992066998731336,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "real_DNA_mean": 1.0,
+    "real_DNA_std": 1.0,
+    "real_DNA_p10": 1.0,
+    "real_DNA_p50": 1.0,
+    "real_DNA_p90": 1.0,
+    "real_DNA_p99": 1.0,
+    "real_DNA_frac_fg": 1.0,
+    "real_DNA_grad": 1.0,
+    "real_DNA_lap": 1.0,
+    "real_DNA_dog1": 1.0,
+    "real_DNA_dog2": 1.0,
+    "real_DNA_dog4": 1.0,
+    "real_DNA_dog8": 1.0,
+    "real_ER_mean": 1.0,
+    "real_ER_std": 1.0,
+    "real_ER_p10": 1.0,
+    "real_ER_p50": 1.0,
+    "real_ER_p90": 1.0,
+    "real_ER_p99": 1.0,
+    "real_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9982465071553821,
+    "ci_low": 0.9954333779831618,
+    "ci_high": 0.9998289580843457
+   }
+  },
+  "virtual|toxic_0.5": {
+   "path": {
+    "cleaning": "near_zero_variance",
+    "transform": "zscore",
+    "selection": "drop_channel_block",
+    "reduction": "none",
+    "model": "logistic_l2",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.9987919576503544,
+   "classification": {
+    "auc": {
+     "estimate": 0.9916284857740822,
+     "ci_low": 0.9812439378367688,
+     "ci_high": 0.998532820683517
+    },
+    "brier": 0.025683141072002792,
+    "prevalence": 0.221875,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.008232806221498409,
+      "frac_pos": 0.0,
+      "n": 224
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.13001549745822671,
+      "frac_pos": 0.2,
+      "n": 10
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.26356028945684395,
+      "frac_pos": 0.16666666666666666,
+      "n": 6
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.36799355594444194,
+      "frac_pos": 0.0,
+      "n": 2
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4451900044069234,
+      "frac_pos": 0.25,
+      "n": 4
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5743008073015812,
+      "frac_pos": 0.5,
+      "n": 2
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6521174560479579,
+      "frac_pos": 0.4,
+      "n": 5
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7299229283927425,
+      "frac_pos": 0.0,
+      "n": 1
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8431106185734923,
+      "frac_pos": 1.0,
+      "n": 3
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.9840768579277195,
+      "frac_pos": 0.9682539682539683,
+      "n": 63
+     }
+    ],
+    "n": 320
+   },
+   "pr_auc": 0.9328323100370083,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "virt_DNA_mean": 1.0,
+    "virt_DNA_std": 1.0,
+    "virt_DNA_p10": 1.0,
+    "virt_DNA_p50": 1.0,
+    "virt_DNA_p90": 1.0,
+    "virt_DNA_p99": 1.0,
+    "virt_DNA_frac_fg": 1.0,
+    "virt_DNA_grad": 1.0,
+    "virt_DNA_lap": 1.0,
+    "virt_DNA_dog1": 1.0,
+    "virt_DNA_dog2": 1.0,
+    "virt_DNA_dog4": 1.0,
+    "virt_DNA_dog8": 1.0,
+    "virt_ER_mean": 1.0,
+    "virt_ER_std": 1.0,
+    "virt_ER_p10": 1.0,
+    "virt_ER_p50": 1.0,
+    "virt_ER_p90": 1.0,
+    "virt_ER_p99": 1.0,
+    "virt_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9946263928955257,
+    "ci_low": 0.9884181796958699,
+    "ci_high": 0.998667531184108
+   }
+  },
+  "brightfield|toxic_0.5": {
+   "path": {
+    "cleaning": "near_zero_variance",
+    "transform": "zscore",
+    "selection": "correlation_filter_0.9",
+    "reduction": "pls",
+    "model": "svm_rbf",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.9904528123577966,
+   "classification": {
+    "auc": {
+     "estimate": 0.982465071553821,
+     "ci_low": 0.96915879114939,
+     "ci_high": 0.993009205039137
+    },
+    "brier": null,
+    "calibration": null,
+    "note": "scores are not probabilities (decision function): Brier score and calibration not computed",
+    "prevalence": 0.221875,
+    "n": 320
+   },
+   "pr_auc": 0.9463943810014438,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "bf_LowZBF_mean": 1.0,
+    "bf_LowZBF_std": 1.0,
+    "bf_LowZBF_frac_fg": 1.0,
+    "bf_LowZBF_grad": 1.0,
+    "bf_LowZBF_dog4": 1.0,
+    "bf_Brightfield_frac_fg": 1.0,
+    "bf_Brightfield_grad": 1.0,
+    "bf_HighZBF_frac_fg": 1.0,
+    "bf_HighZBF_dog4": 1.0,
+    "bf_corr_LowZBF_Brightfield": 1.0,
+    "bf_corr_LowZBF_HighZBF": 1.0,
+    "bf_corr_Brightfield_HighZBF": 1.0,
+    "bf_Brightfield_lap": 0.8,
+    "bf_HighZBF_std": 0.4,
+    "bf_Brightfield_dog8": 0.2,
+    "bf_LowZBF_dog8": 0.2,
+    "bf_Brightfield_dog2": 0.2
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9743763787544544,
+    "ci_low": 0.95416710954696,
+    "ci_high": 0.9902321762397798
+   }
+  },
+  "brightfield+virtual|toxic_0.5": {
+   "path": {
+    "cleaning": "near_zero_variance",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "random_forest",
+    "calibration": "none",
+    "imbalance": "threshold_tuning"
+   },
+   "search_value": 0.9983852252526076,
+   "classification": {
+    "auc": {
+     "estimate": 0.9955314214604898,
+     "ci_low": 0.9901174104372091,
+     "ci_high": 0.998915503925732
+    },
+    "brier": 0.023984929044000517,
+    "prevalence": 0.221875,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.004486646981514536,
+      "frac_pos": 0.0,
+      "n": 229
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.14245351147694896,
+      "frac_pos": 0.25,
+      "n": 8
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.25583333333333336,
+      "frac_pos": 0.0,
+      "n": 2
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.3278649105524105,
+      "frac_pos": 0.5,
+      "n": 2
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4573706533648855,
+      "frac_pos": 0.2,
+      "n": 5
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5360193100944208,
+      "frac_pos": 0.0,
+      "n": 2
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6594773104779622,
+      "frac_pos": 0.7142857142857143,
+      "n": 7
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7571331661803985,
+      "frac_pos": 0.7142857142857143,
+      "n": 7
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8734650651029882,
+      "frac_pos": 0.9166666666666666,
+      "n": 12
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.96829973904262,
+      "frac_pos": 1.0,
+      "n": 46
+     }
+    ],
+    "n": 320
+   },
+   "pr_auc": 0.9853025822692744,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "virt_DNA_mean": 1.0,
+    "virt_DNA_std": 1.0,
+    "virt_DNA_p10": 1.0,
+    "virt_DNA_p50": 1.0,
+    "virt_DNA_p90": 1.0,
+    "virt_DNA_p99": 1.0,
+    "virt_DNA_frac_fg": 1.0,
+    "virt_DNA_grad": 1.0,
+    "virt_DNA_lap": 1.0,
+    "virt_DNA_dog1": 1.0,
+    "virt_DNA_dog2": 1.0,
+    "virt_DNA_dog4": 1.0,
+    "virt_DNA_dog8": 1.0,
+    "virt_ER_mean": 1.0,
+    "virt_ER_std": 1.0,
+    "virt_ER_p10": 1.0,
+    "virt_ER_p50": 1.0,
+    "virt_ER_p90": 1.0,
+    "virt_ER_p99": 1.0,
+    "virt_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9929860286215283,
+    "ci_low": 0.9838035710808652,
+    "ci_high": 0.9987425389097131
+   }
+  },
+  "real|toxic_0.8": {
+   "path": {
+    "cleaning": "none",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_l2",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.9917329589451656,
+   "classification": {
+    "auc": {
+     "estimate": 0.98909047314578,
+     "ci_low": 0.9805334080052125,
+     "ci_high": 0.9951734350173917
+    },
+    "brier": 0.04220331192789055,
+    "prevalence": 0.425,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.010637798235899698,
+      "frac_pos": 0.006535947712418301,
+      "n": 153
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.13963459465074793,
+      "frac_pos": 0.18181818181818182,
+      "n": 11
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.253360492294025,
+      "frac_pos": 0.3,
+      "n": 10
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.34090524131519384,
+      "frac_pos": 0.25,
+      "n": 4
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4426907825621296,
+      "frac_pos": 0.25,
+      "n": 4
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5670330063477191,
+      "frac_pos": 0.75,
+      "n": 4
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6388899389456463,
+      "frac_pos": 0.5714285714285714,
+      "n": 7
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7607676151579646,
+      "frac_pos": 0.625,
+      "n": 8
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.851599216351719,
+      "frac_pos": 0.9,
+      "n": 10
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.991784400805787,
+      "frac_pos": 0.981651376146789,
+      "n": 109
+     }
+    ],
+    "n": 320
+   },
+   "pr_auc": 0.9857470492499132,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "real_DNA_mean": 1.0,
+    "real_DNA_std": 1.0,
+    "real_DNA_p10": 1.0,
+    "real_DNA_p50": 1.0,
+    "real_DNA_p90": 1.0,
+    "real_DNA_p99": 1.0,
+    "real_DNA_frac_fg": 1.0,
+    "real_DNA_grad": 1.0,
+    "real_DNA_lap": 1.0,
+    "real_DNA_dog1": 1.0,
+    "real_DNA_dog2": 1.0,
+    "real_DNA_dog4": 1.0,
+    "real_DNA_dog8": 1.0,
+    "real_ER_mean": 1.0,
+    "real_ER_std": 1.0,
+    "real_ER_p10": 1.0,
+    "real_ER_p50": 1.0,
+    "real_ER_p90": 1.0,
+    "real_ER_p99": 1.0,
+    "real_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9864530051150895,
+    "ci_low": 0.9770560970183509,
+    "ci_high": 0.993659794229234
+   }
+  },
+  "virtual|toxic_0.8": {
+   "path": {
+    "cleaning": "plate_robust_z_vs_dmso",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_unpenalised",
+    "calibration": "platt",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.9956762271961916,
+   "classification": {
+    "auc": {
+     "estimate": 0.9786604859335037,
+     "ci_low": 0.9586950238313068,
+     "ci_high": 0.9932168067161764
+    },
+    "brier": 0.060904435173385285,
+    "prevalence": 0.425,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.03416162399821434,
+      "frac_pos": 0.009708737864077669,
+      "n": 103
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.14209764373101705,
+      "frac_pos": 0.0,
+      "n": 26
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.2480691857445055,
+      "frac_pos": 0.0,
+      "n": 24
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.35013859816552056,
+      "frac_pos": 0.3181818181818182,
+      "n": 22
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.45306716163835453,
+      "frac_pos": 0.3333333333333333,
+      "n": 12
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5510363813106198,
+      "frac_pos": 0.625,
+      "n": 16
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6652810004960281,
+      "frac_pos": 0.9,
+      "n": 10
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7367341021839828,
+      "frac_pos": 0.95,
+      "n": 20
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8510073741963334,
+      "frac_pos": 1.0,
+      "n": 35
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.95497249234949,
+      "frac_pos": 0.9807692307692307,
+      "n": 52
+     }
+    ],
+    "n": 320
+   },
+   "pr_auc": 0.9543353619379475,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "virt_DNA_mean": 1.0,
+    "virt_DNA_std": 1.0,
+    "virt_DNA_p10": 1.0,
+    "virt_DNA_p50": 1.0,
+    "virt_DNA_p90": 1.0,
+    "virt_DNA_p99": 1.0,
+    "virt_DNA_frac_fg": 1.0,
+    "virt_DNA_grad": 1.0,
+    "virt_DNA_lap": 1.0,
+    "virt_DNA_dog1": 1.0,
+    "virt_DNA_dog2": 1.0,
+    "virt_DNA_dog4": 1.0,
+    "virt_DNA_dog8": 1.0,
+    "virt_ER_mean": 1.0,
+    "virt_ER_std": 1.0,
+    "virt_ER_p10": 1.0,
+    "virt_ER_p50": 1.0,
+    "virt_ER_p90": 1.0,
+    "virt_ER_p99": 1.0,
+    "virt_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9830163043478262,
+    "ci_low": 0.9703113259991618,
+    "ci_high": 0.9931370430739294
+   }
+  },
+  "brightfield|toxic_0.8": {
+   "path": {
+    "cleaning": "none",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "svm_linear",
+    "calibration": "platt",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.9821471789793976,
+   "classification": {
+    "auc": {
+     "estimate": 0.9333839514066496,
+     "ci_low": 0.9033218194302514,
+     "ci_high": 0.9593085939724542
+    },
+    "brier": 0.10263240869599402,
+    "prevalence": 0.425,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.046652585573498724,
+      "frac_pos": 0.02702702702702703,
+      "n": 74
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.1479844756978167,
+      "frac_pos": 0.046511627906976744,
+      "n": 43
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.2500829741223891,
+      "frac_pos": 0.15625,
+      "n": 32
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.34033570056045753,
+      "frac_pos": 0.2608695652173913,
+      "n": 23
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4380628034069115,
+      "frac_pos": 0.42857142857142855,
+      "n": 21
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5495392287806407,
+      "frac_pos": 0.76,
+      "n": 25
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.648830072881312,
+      "frac_pos": 0.8333333333333334,
+      "n": 18
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7508361196877632,
+      "frac_pos": 0.7692307692307693,
+      "n": 13
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8592042647791945,
+      "frac_pos": 1.0,
+      "n": 17
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.9712686161790849,
+      "frac_pos": 0.9444444444444444,
+      "n": 54
+     }
+    ],
+    "n": 320
+   },
+   "pr_auc": 0.8799476349206623,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "bf_LowZBF_mean": 1.0,
+    "bf_LowZBF_std": 1.0,
+    "bf_LowZBF_p10": 1.0,
+    "bf_LowZBF_p50": 1.0,
+    "bf_LowZBF_p90": 1.0,
+    "bf_LowZBF_p99": 1.0,
+    "bf_LowZBF_frac_fg": 1.0,
+    "bf_LowZBF_grad": 1.0,
+    "bf_LowZBF_lap": 1.0,
+    "bf_LowZBF_dog1": 1.0,
+    "bf_LowZBF_dog2": 1.0,
+    "bf_LowZBF_dog4": 1.0,
+    "bf_LowZBF_dog8": 1.0,
+    "bf_Brightfield_mean": 1.0,
+    "bf_Brightfield_std": 1.0,
+    "bf_Brightfield_p10": 1.0,
+    "bf_Brightfield_p50": 1.0,
+    "bf_Brightfield_p90": 1.0,
+    "bf_Brightfield_p99": 1.0,
+    "bf_Brightfield_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9319453324808185,
+    "ci_low": 0.901703783653412,
+    "ci_high": 0.9572523814490335
+   }
+  },
+  "brightfield+virtual|toxic_0.8": {
+   "path": {
+    "cleaning": "plate_robust_z_vs_dmso",
+    "transform": "robust_z",
+    "selection": "none",
+    "reduction": "none",
+    "model": "stacking_best_per_family",
+    "calibration": "none",
+    "imbalance": "threshold_tuning"
+   },
+   "search_value": 0.9945176302451078,
+   "classification": {
+    "auc": {
+     "estimate": 0.9735453964194374,
+     "ci_low": 0.9493258261453591,
+     "ci_high": 0.990292957537963
+    },
+    "brier": 0.048410835272271746,
+    "prevalence": 0.425,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.05279999487833109,
+      "frac_pos": 0.01948051948051948,
+      "n": 154
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.12853276380118495,
+      "frac_pos": 0.05555555555555555,
+      "n": 18
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.2343707620727995,
+      "frac_pos": 0.5714285714285714,
+      "n": 7
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.3194802782582264,
+      "frac_pos": 0.0,
+      "n": 1
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4474899526257153,
+      "frac_pos": 0.25,
+      "n": 4
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5577690086062562,
+      "frac_pos": 0.7142857142857143,
+      "n": 7
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6778086463142198,
+      "frac_pos": 0.6666666666666666,
+      "n": 6
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7516436730650191,
+      "frac_pos": 0.7142857142857143,
+      "n": 7
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8556755269944751,
+      "frac_pos": 1.0,
+      "n": 11
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.9434325168121698,
+      "frac_pos": 0.9714285714285714,
+      "n": 105
+     }
+    ],
+    "n": 320
+   },
+   "pr_auc": 0.9661392785035186,
+   "permutation_p": 0.004975124378109453,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "virt_DNA_mean": 1.0,
+    "virt_DNA_std": 1.0,
+    "virt_DNA_p10": 1.0,
+    "virt_DNA_p50": 1.0,
+    "virt_DNA_p90": 1.0,
+    "virt_DNA_p99": 1.0,
+    "virt_DNA_frac_fg": 1.0,
+    "virt_DNA_grad": 1.0,
+    "virt_DNA_lap": 1.0,
+    "virt_DNA_dog1": 1.0,
+    "virt_DNA_dog2": 1.0,
+    "virt_DNA_dog4": 1.0,
+    "virt_DNA_dog8": 1.0,
+    "virt_ER_mean": 1.0,
+    "virt_ER_std": 1.0,
+    "virt_ER_p10": 1.0,
+    "virt_ER_p50": 1.0,
+    "virt_ER_p90": 1.0,
+    "virt_ER_p99": 1.0,
+    "virt_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.9816176470588235,
+    "ci_low": 0.9681332278661929,
+    "ci_high": 0.9917803056724778
+   }
+  },
+  "real|viability": {
+   "path": {
+    "cleaning": "none",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_l2"
+   },
+   "search_value": 0.979564965896874,
+   "agreement": {
+    "pearson": {
+     "estimate": 0.9927020101151856,
+     "ci_low": 0.9906944710641995,
+     "ci_high": 0.994176445574742
+    },
+    "lins_ccc": {
+     "estimate": 0.9926493269379779,
+     "ci_low": 0.9905562536209924,
+     "ci_high": 0.9940899651554427
+    },
+    "icc_2_1": 0.992672129463858,
+    "bland_altman": {
+     "bias": 0.0006719328713847531,
+     "loa_low": -0.0845146402185518,
+     "loa_high": 0.08585850596132132,
+     "proportional_bias_slope": -0.010167242391176733,
+     "proportional_bias_p": 0.1351201353405071,
+     "n": 320
+    },
+    "regression": {
+     "slope": 0.9826964754196044,
+     "slope_ci": [
+      0.9695256231277397,
+      0.995867327711469
+     ],
+     "intercept": 0.014127949294624798,
+     "intercept_ci": [
+      0.002842817711376497,
+      0.025413080877873098
+     ],
+     "r2": 0.9854572808867298
+    }
+   },
+   "r2": 0.9854460577084297
+  },
+  "virtual|viability": {
+   "path": {
+    "cleaning": "winsorise",
+    "transform": "zscore",
+    "selection": "drop_channel_block",
+    "reduction": "none",
+    "model": "svm_linear"
+   },
+   "search_value": 0.974876895668166,
+   "agreement": {
+    "pearson": {
+     "estimate": 0.9673392668480444,
+     "ci_low": 0.9348032287921577,
+     "ci_high": 0.9884134076520826
+    },
+    "lins_ccc": {
+     "estimate": 0.9669454618371756,
+     "ci_low": 0.9338781028561622,
+     "ci_high": 0.9879697813033353
+    },
+    "icc_2_1": 0.9670453532044652,
+    "bland_altman": {
+     "bias": -0.008652935615603508,
+     "loa_low": -0.18810221324548898,
+     "loa_high": 0.17079634201428195,
+     "proportional_bias_slope": -0.015323230290476995,
+     "proportional_bias_p": 0.2897497349648611,
+     "n": 320
+    },
+    "regression": {
+     "slope": 0.9528676175484077,
+     "slope_ci": [
+      0.9253191833293365,
+      0.9804160517674788
+     ],
+     "intercept": 0.027999372380283494,
+     "intercept_ci": [
+      0.0043951516217904905,
+      0.05160359313877649
+     ],
+     "r2": 0.935745257186112
+    }
+   },
+   "r2": 0.9348534115491259
+  },
+  "brightfield|viability": {
+   "path": {
+    "cleaning": "near_zero_variance",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "stacking_best_per_family"
+   },
+   "search_value": 0.9168522985109576,
+   "agreement": {
+    "pearson": {
+     "estimate": 0.9042238228553647,
+     "ci_low": 0.8598253445381114,
+     "ci_high": 0.9390025607183894
+    },
+    "lins_ccc": {
+     "estimate": 0.8977031204489989,
+     "ci_low": 0.8549210531316961,
+     "ci_high": 0.9306510945778935
+    },
+    "icc_2_1": 0.8979901879305386,
+    "bland_altman": {
+     "bias": 0.004628533448573505,
+     "loa_low": -0.2972034922039183,
+     "loa_high": 0.3064605591010653,
+     "proportional_bias_slope": -0.12552947177082258,
+     "proportional_bias_p": 9.069851547623469e-07,
+     "n": 320
+    },
+    "regression": {
+     "slope": 0.8022294676279292,
+     "slope_ci": [
+      0.7604270898183678,
+      0.8440318454374907
+     ],
+     "intercept": 0.15842399397842377,
+     "intercept_ci": [
+      0.12260662061338007,
+      0.19424136734346747
+     ],
+     "r2": 0.8176207218191702
+    }
+   },
+   "r2": 0.8171654540286064
+  },
+  "brightfield+virtual|viability": {
+   "path": {
+    "cleaning": "winsorise",
+    "transform": "zscore",
+    "selection": "drop_channel_block",
+    "reduction": "none",
+    "model": "svm_linear"
+   },
+   "search_value": 0.9769185573367312,
+   "agreement": {
+    "pearson": {
+     "estimate": 0.97269440579414,
+     "ci_low": 0.9496127747945706,
+     "ci_high": 0.9884716564082225
+    },
+    "lins_ccc": {
+     "estimate": 0.9725523834273473,
+     "ci_low": 0.9494018697013993,
+     "ci_high": 0.9883325174697167
+    },
+    "icc_2_1": 0.9726358100985362,
+    "bland_altman": {
+     "bias": -0.004715565259263673,
+     "loa_low": -0.16903214845892423,
+     "loa_high": 0.15960101794039688,
+     "proportional_bias_slope": -0.011029844882763937,
+     "proportional_bias_p": 0.40382175174758783,
+     "n": 320
+    },
+    "regression": {
+     "slope": 0.9621694611890037,
+     "slope_ci": [
+      0.9368402627238174,
+      0.98749865965419
+     ],
+     "intercept": 0.02470320137268167,
+     "intercept_ci": [
+      0.0030004799964502803,
+      0.04640592274891306
+     ],
+     "r2": 0.9461344070632154
+    }
+   },
+   "r2": 0.9456908257104603
+  },
+  "real|treated_vs_dmso": {
+   "path": {
+    "cleaning": "winsorise",
+    "transform": "yeo_johnson",
+    "selection": "none",
+    "reduction": "pls",
+    "model": "naive_bayes",
+    "calibration": "platt",
+    "imbalance": "threshold_tuning"
+   },
+   "search_value": 0.7081097679025685,
+   "classification": {
+    "auc": {
+     "estimate": 0.5158797554347826,
+     "ci_low": 0.4311215232510904,
+     "ci_high": 0.6032856500441163
+    },
+    "brier": 0.1982970642720977,
+    "prevalence": 0.7419354838709677,
+    "calibration": [
+     {
+      "bin": 4,
+      "mean_pred": 0.44309309471712216,
+      "frac_pos": 0.5,
+      "n": 4
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5579149332630461,
+      "frac_pos": 0.9375,
+      "n": 16
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.661823223240151,
+      "frac_pos": 0.6818181818181818,
+      "n": 44
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7604791220631787,
+      "frac_pos": 0.75,
+      "n": 120
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8246363899112685,
+      "frac_pos": 0.734375,
+      "n": 64
+     }
+    ],
+    "n": 248
+   },
+   "pr_auc": 0.7355942917345402,
+   "permutation_p": 0.3681592039800995,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "real_DNA_mean": 1.0,
+    "real_DNA_std": 1.0,
+    "real_DNA_p10": 1.0,
+    "real_DNA_p50": 1.0,
+    "real_DNA_p90": 1.0,
+    "real_DNA_p99": 1.0,
+    "real_DNA_frac_fg": 1.0,
+    "real_DNA_grad": 1.0,
+    "real_DNA_lap": 1.0,
+    "real_DNA_dog1": 1.0,
+    "real_DNA_dog2": 1.0,
+    "real_DNA_dog4": 1.0,
+    "real_DNA_dog8": 1.0,
+    "real_ER_mean": 1.0,
+    "real_ER_std": 1.0,
+    "real_ER_p10": 1.0,
+    "real_ER_p50": 1.0,
+    "real_ER_p90": 1.0,
+    "real_ER_p99": 1.0,
+    "real_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.5315047554347827,
+    "ci_low": 0.44976722938080516,
+    "ci_high": 0.6159623978385836
+   }
+  },
+  "virtual|treated_vs_dmso": {
+   "path": {
+    "cleaning": "none",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_l2",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.7009111456293194,
+   "classification": {
+    "auc": {
+     "estimate": 0.4817425271739131,
+     "ci_low": 0.39956490215331325,
+     "ci_high": 0.5602778096666717
+    },
+    "brier": 0.26619182065746955,
+    "prevalence": 0.7419354838709677,
+    "calibration": [
+     {
+      "bin": 0,
+      "mean_pred": 0.02219558593681596,
+      "frac_pos": 1.0,
+      "n": 2
+     },
+     {
+      "bin": 1,
+      "mean_pred": 0.16935600002078194,
+      "frac_pos": 0.8,
+      "n": 5
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.25626579231817126,
+      "frac_pos": 0.875,
+      "n": 8
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.3622459138932751,
+      "frac_pos": 0.6956521739130435,
+      "n": 23
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4557909746012155,
+      "frac_pos": 0.7619047619047619,
+      "n": 63
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5448288661267358,
+      "frac_pos": 0.7073170731707317,
+      "n": 82
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6509588239707368,
+      "frac_pos": 0.7659574468085106,
+      "n": 47
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7507060257733618,
+      "frac_pos": 0.75,
+      "n": 12
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8641564011486473,
+      "frac_pos": 0.75,
+      "n": 4
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.9617770490274345,
+      "frac_pos": 0.5,
+      "n": 2
+     }
+    ],
+    "n": 248
+   },
+   "pr_auc": 0.7296290913133375,
+   "permutation_p": 0.7263681592039801,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "virt_DNA_mean": 1.0,
+    "virt_DNA_std": 1.0,
+    "virt_DNA_p10": 1.0,
+    "virt_DNA_p50": 1.0,
+    "virt_DNA_p90": 1.0,
+    "virt_DNA_p99": 1.0,
+    "virt_DNA_frac_fg": 1.0,
+    "virt_DNA_grad": 1.0,
+    "virt_DNA_lap": 1.0,
+    "virt_DNA_dog1": 1.0,
+    "virt_DNA_dog2": 1.0,
+    "virt_DNA_dog4": 1.0,
+    "virt_DNA_dog8": 1.0,
+    "virt_ER_mean": 1.0,
+    "virt_ER_std": 1.0,
+    "virt_ER_p10": 1.0,
+    "virt_ER_p50": 1.0,
+    "virt_ER_p90": 1.0,
+    "virt_ER_p99": 1.0,
+    "virt_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.5099354619565217,
+    "ci_low": 0.4344804617813809,
+    "ci_high": 0.5873264980725206
+   }
+  },
+  "brightfield|treated_vs_dmso": {
+   "path": {
+    "cleaning": "none",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_l1",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "search_value": 0.5619827559037393,
+   "classification": {
+    "auc": {
+     "estimate": 0.4193699048913043,
+     "ci_low": 0.33955908275489005,
+     "ci_high": 0.5003423904862261
+    },
+    "brier": 0.2610103728839513,
+    "prevalence": 0.7419354838709677,
+    "calibration": [
+     {
+      "bin": 1,
+      "mean_pred": 0.15997697310661288,
+      "frac_pos": 1.0,
+      "n": 1
+     },
+     {
+      "bin": 2,
+      "mean_pred": 0.261512332496331,
+      "frac_pos": 1.0,
+      "n": 2
+     },
+     {
+      "bin": 3,
+      "mean_pred": 0.3691975424728132,
+      "frac_pos": 0.9285714285714286,
+      "n": 14
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.46060409726962226,
+      "frac_pos": 0.7804878048780488,
+      "n": 82
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5289644505175419,
+      "frac_pos": 0.6967213114754098,
+      "n": 122
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6420555834437243,
+      "frac_pos": 0.6666666666666666,
+      "n": 21
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7371493344927554,
+      "frac_pos": 0.75,
+      "n": 4
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.8177765187653407,
+      "frac_pos": 1.0,
+      "n": 2
+     }
+    ],
+    "n": 248
+   },
+   "pr_auc": 0.7160538354179388,
+   "permutation_p": 0.9751243781094527,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "bf_LowZBF_mean": 1.0,
+    "bf_LowZBF_std": 1.0,
+    "bf_LowZBF_p10": 1.0,
+    "bf_LowZBF_p50": 1.0,
+    "bf_LowZBF_p90": 1.0,
+    "bf_LowZBF_p99": 1.0,
+    "bf_LowZBF_frac_fg": 1.0,
+    "bf_LowZBF_grad": 1.0,
+    "bf_LowZBF_lap": 1.0,
+    "bf_LowZBF_dog1": 1.0,
+    "bf_LowZBF_dog2": 1.0,
+    "bf_LowZBF_dog4": 1.0,
+    "bf_LowZBF_dog8": 1.0,
+    "bf_Brightfield_mean": 1.0,
+    "bf_Brightfield_std": 1.0,
+    "bf_Brightfield_p10": 1.0,
+    "bf_Brightfield_p50": 1.0,
+    "bf_Brightfield_p90": 1.0,
+    "bf_Brightfield_p99": 1.0,
+    "bf_Brightfield_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.3800951086956522,
+    "ci_low": 0.3013264922169071,
+    "ci_high": 0.46277536398346025
+   }
+  },
+  "brightfield+virtual|treated_vs_dmso": {
+   "path": {
+    "cleaning": "plate_robust_z_vs_dmso",
+    "transform": "zscore",
+    "selection": "drop_channel_block",
+    "reduction": "pls",
+    "model": "naive_bayes",
+    "calibration": "isotonic",
+    "imbalance": "threshold_tuning"
+   },
+   "search_value": 0.6820500438981562,
+   "classification": {
+    "auc": {
+     "estimate": 0.41193953804347827,
+     "ci_low": 0.3306564228750194,
+     "ci_high": 0.4993063375032219
+    },
+    "brier": 0.21209120662678713,
+    "prevalence": 0.7419354838709677,
+    "calibration": [
+     {
+      "bin": 3,
+      "mean_pred": 0.31334841628959276,
+      "frac_pos": 1.0,
+      "n": 1
+     },
+     {
+      "bin": 4,
+      "mean_pred": 0.4888642975514905,
+      "frac_pos": 0.8,
+      "n": 5
+     },
+     {
+      "bin": 5,
+      "mean_pred": 0.5618595201998858,
+      "frac_pos": 0.7058823529411765,
+      "n": 17
+     },
+     {
+      "bin": 6,
+      "mean_pred": 0.6555714933344489,
+      "frac_pos": 0.7727272727272727,
+      "n": 44
+     },
+     {
+      "bin": 7,
+      "mean_pred": 0.7489928697344681,
+      "frac_pos": 0.8073394495412844,
+      "n": 109
+     },
+     {
+      "bin": 8,
+      "mean_pred": 0.840180429539956,
+      "frac_pos": 0.6349206349206349,
+      "n": 63
+     },
+     {
+      "bin": 9,
+      "mean_pred": 0.9288979782772194,
+      "frac_pos": 0.5555555555555556,
+      "n": 9
+     }
+    ],
+    "n": 248
+   },
+   "pr_auc": 0.6830385283106672,
+   "permutation_p": 0.9950248756218906,
+   "leave_one_plate_out_auc": [],
+   "selection_stability_top": {
+    "virt_DNA_mean": 1.0,
+    "virt_DNA_std": 1.0,
+    "virt_DNA_p10": 1.0,
+    "virt_DNA_p50": 1.0,
+    "virt_DNA_p90": 1.0,
+    "virt_DNA_p99": 1.0,
+    "virt_DNA_frac_fg": 1.0,
+    "virt_DNA_grad": 1.0,
+    "virt_DNA_lap": 1.0,
+    "virt_DNA_dog1": 1.0,
+    "virt_DNA_dog2": 1.0,
+    "virt_DNA_dog4": 1.0,
+    "virt_DNA_dog8": 1.0,
+    "virt_ER_mean": 1.0,
+    "virt_ER_std": 1.0,
+    "virt_ER_p10": 1.0,
+    "virt_ER_p50": 1.0,
+    "virt_ER_p90": 1.0,
+    "virt_ER_p99": 1.0,
+    "virt_ER_frac_fg": 1.0
+   },
+   "bayes_laplace_auc": {
+    "estimate": 0.40743885869565216,
+    "ci_low": 0.328125,
+    "ci_high": 0.4961460874986721
+   }
+  }
+ },
+ "comparisons": [
+  {
+   "label": "toxic_0.5",
+   "comparison": "virtual vs brightfield",
+   "auc_1": 0.9916284857740824,
+   "auc_2": 0.982465071553821,
+   "diff": 0.009163414220261346,
+   "p": 0.15291034698608932,
+   "bayes": {
+    "mean": 0.009243141247436373,
+    "cri95": [
+     -0.004,
+     0.0235
+    ],
+    "p_gt_0": 0.9275
+   },
+   "p_holm": 0.917462081916536,
+   "p_bh": 0.3025754582301145
+  },
+  {
+   "label": "toxic_0.5",
+   "comparison": "virtual vs real",
+   "auc_1": 0.9916284857740824,
+   "auc_2": 0.9971717857344872,
+   "diff": -0.005543299960404813,
+   "p": 0.21418469508915394,
+   "bayes": {
+    "mean": -0.005513616541464068,
+    "cri95": [
+     -0.0169,
+     0.0011
+    ],
+    "p_gt_0": 0.055
+   },
+   "p_holm": 1.0,
+   "p_bh": 0.3025754582301145
+  },
+  {
+   "label": "toxic_0.5",
+   "comparison": "brightfield+virtual vs brightfield",
+   "auc_1": 0.9955314214604898,
+   "auc_2": 0.982465071553821,
+   "diff": 0.013066349906668773,
+   "p": 0.004212313926973523,
+   "bayes": {
+    "mean": 0.013135641421564077,
+    "cri95": [
+     0.0058,
+     0.0238
+    ],
+    "p_gt_0": 1.0
+   },
+   "p_holm": 0.02948619748881466,
+   "p_bh": 0.012636941780920568
+  },
+  {
+   "label": "toxic_0.8",
+   "comparison": "virtual vs brightfield",
+   "auc_1": 0.9786604859335037,
+   "auc_2": 0.9333839514066496,
+   "diff": 0.045276534526854095,
+   "p": 0.003387038093812634,
+   "bayes": {
+    "mean": 0.045509215174322465,
+    "cri95": [
+     0.0146,
+     0.0796
+    ],
+    "p_gt_0": 0.998
+   },
+   "p_holm": 0.027096304750501073,
+   "p_bh": 0.012636941780920568
+  },
+  {
+   "label": "toxic_0.8",
+   "comparison": "virtual vs real",
+   "auc_1": 0.9786604859335037,
+   "auc_2": 0.9890904731457801,
+   "diff": -0.010429987212276393,
+   "p": 0.21734062904740925,
+   "bayes": {
+    "mean": -0.010540119424026188,
+    "cri95": [
+     -0.0308,
+     0.0022
+    ],
+    "p_gt_0": 0.073
+   },
+   "p_holm": 1.0,
+   "p_bh": 0.3025754582301145
+  },
+  {
+   "label": "toxic_0.8",
+   "comparison": "brightfield+virtual vs brightfield",
+   "auc_1": 0.9735453964194373,
+   "auc_2": 0.9333839514066496,
+   "diff": 0.04016144501278762,
+   "p": 0.002915577910785659,
+   "bayes": {
+    "mean": 0.04054279890360542,
+    "cri95": [
+     0.014,
+     0.07
+    ],
+    "p_gt_0": 0.998
+   },
+   "p_holm": 0.02624020119707093,
+   "p_bh": 0.012636941780920568
+  },
+  {
+   "label": "treated_vs_dmso",
+   "comparison": "virtual vs brightfield",
+   "auc_1": 0.4817425271739131,
+   "auc_2": 0.41936990489130443,
+   "diff": 0.06237262228260865,
+   "p": 0.2353364675123113,
+   "bayes": {
+    "mean": 0.06255353772585084,
+    "cri95": [
+     -0.0395,
+     0.1623
+    ],
+    "p_gt_0": 0.886
+   },
+   "p_holm": 1.0,
+   "p_bh": 0.3025754582301145
+  },
+  {
+   "label": "treated_vs_dmso",
+   "comparison": "virtual vs real",
+   "auc_1": 0.4817425271739131,
+   "auc_2": 0.5158797554347827,
+   "diff": -0.03413722826086962,
+   "p": 0.4800053736325559,
+   "bayes": {
+    "mean": -0.03303077192264165,
+    "cri95": [
+     -0.1272,
+     0.0628
+    ],
+    "p_gt_0": 0.2435
+   },
+   "p_holm": 1.0,
+   "p_bh": 0.5400060453366254
+  },
+  {
+   "label": "treated_vs_dmso",
+   "comparison": "brightfield+virtual vs brightfield",
+   "auc_1": 0.41193953804347827,
+   "auc_2": 0.41936990489130443,
+   "diff": -0.007430366847826164,
+   "p": 0.8193932993521134,
+   "bayes": {
+    "mean": -0.00788078040301719,
+    "cri95": [
+     -0.0715,
+     0.0573
+    ],
+    "p_gt_0": 0.4085
+   },
+   "p_holm": 1.0,
+   "p_bh": 0.8193932993521134
+  }
+ ]
+}

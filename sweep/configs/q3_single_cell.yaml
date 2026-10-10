@@ -1,0 +1,40 @@
+# Q3 - Single cell: find each cell, measure it, group cells into states (virtual vs real stains)
+# A path = source -> channels -> preprocessing -> segmentation -> features -> processing -> embedding -> clustering -> evaluation
+
+tree:
+  source:          [virtual_stains, real_stains]            # always both: real = reference
+  channels:        [dna_only, dna+agp, all_five]
+  preprocessing:   [none, background_subtraction]
+  segmentation:
+    model:         [cellpose_nuclei, cellpose_cyto3, cellpose_cyto2, stardist, otsu_watershed]
+    diameter:      [auto, 10, 14, 18, 30]
+    flow_threshold:     [0.4, 0.6]
+    cellprob_threshold: [-1, 0]
+  features:        [morphology, morphology+intensity, morphology+intensity+haralick, +zernike]
+  processing:      [standardise, robust_z_vs_dmso, correlation_filter_0.9, pca]
+  embedding:       [pca, umap]
+  clustering:      [kmeans_4_16, gmm_bic, leiden, louvain, hdbscan, hierarchical_ward]
+  n_states_choice: [silhouette, bic, bootstrap_stability]
+  supervised:      [logistic, gradient_boosting, mlp]       # per-cell treated vs DMSO, alternative to clustering
+  evaluation:      [f1_vs_real]                             # screening metric
+
+rules:
+  - "cellpose_nuclei / stardist -> channels=dna_only"
+  - "diameter applies to cellpose only; flow/cellprob thresholds to cellpose only"
+  - "segmentation is searched first; features/clustering are searched on the surviving segmentation"
+
+search:
+  method: bayesian_tpe
+  early_stopping: successive_halving
+  paths_to_try: {segmentation: 40, downstream: 60}
+  checkpoints:                 # nested subsets of test fields
+    - {data: 25%}              # 384 fields
+    - {data: 50%}              # 768
+    - {data: 100%}             # 1,536
+
+assessment:
+  masks:     [f1_iou_0.5, dice, ap_iou_0.5_0.95]
+  counts:    [bland_altman, lins_ccc, icc]
+  features:  [per_feature_lins_ccc]
+  states:    [ari, nmi, bootstrap_stability, wasserstein_ks_per_compound, mixed_model_state_proportions]
+  supervised: [auc_bootstrap_ci, delong_virtual_vs_real]

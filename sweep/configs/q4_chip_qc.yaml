@@ -1,0 +1,32 @@
+# Q4 - Organ-on-a-chip quality control (good/bad chip from bright-field)
+# A path = scope -> preprocessing -> representation -> fusion -> reduction -> model -> exploration -> evaluation
+
+tree:
+  scope:           [all_cell_types, per_cell_type]
+  preprocessing:   [centre_crop, resize, tiles_mean, clahe+centre_crop]
+  representation:  [handcrafted, glcm_lbp, resnet50, efficientnet_b3, convnext_tiny,
+                    dinov2_small, dinov2_base, dinov2_large, clip_vit_b16, virtual_stain_features]
+  fusion:          [single, concat_with_handcrafted, concat_with_virtual]
+  reduction:       [none, pca_50, l1_selection, correlation_filter_0.9]
+  model:           [logistic_l1, logistic_l2, logistic_elasticnet, bayes_logistic, svm, random_forest,
+                    hist_gradient_boosting, mlp, knn, finetuned_cnn]
+  exploration:                                    # finetuned_cnn only
+    trained_layers: [last_layer, last_block, all_layers]
+    lr:             [1.0e-4, 3.0e-4]
+  evaluation:      [auc]                          # out-of-fold, grouped by experiment
+
+rules:
+  - "finetuned_cnn -> representation=resnet18 internally; fusion/reduction not applicable"
+  - "embeddings computed once per (representation, preprocessing) and cached"
+
+search:
+  method: bayesian_tpe
+  early_stopping: successive_halving
+  paths_to_try: 100
+  checkpoints:                 # nested subsets of experiments; all images of an experiment stay together
+    - {data: 25%}              # ~15 experiments
+    - {data: 50%}              # ~30
+    - {data: 100%}             # 59
+
+validation: [grouped_by_experiment_5fold, leave_one_cell_type_out, leave_one_day_out]
+assessment: [auc_cluster_bootstrap_ci, calibration, brier, per_cell_type_auc, grad_cam_maps, comparison_to_dataset_paper]

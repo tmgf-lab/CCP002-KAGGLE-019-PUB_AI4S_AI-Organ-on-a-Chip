@@ -1,0 +1,15 @@
+data/
+legacy/runs/*/last.pt
+legacy/runs/*/example_*.npz
+__pycache__/
+*.pyc
+demo*.png
+kaggle_jobs/kernels/
+kaggle_jobs/datasets/
+kaggle_jobs/*.log
+kaggle_jobs/*.stdout
+runs/winner/*/best.pt
+runs/winner/q1_winner.json
+work/
+notebooks/.ipynb_checkpoints/
+video/

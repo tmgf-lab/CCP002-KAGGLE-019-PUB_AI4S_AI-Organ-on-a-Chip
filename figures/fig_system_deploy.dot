@@ -1,0 +1,24 @@
+// Figure 1, top: the deployed system on new images (vcp_system.py). Each question box (⚙) holds a model chosen by its own path search
+// (bottom panel, fig_system_search.dot). Rendered and combined by tools/report_figures.py (needs Graphviz).
+digraph deploy {
+  graph [rankdir=LR, newrank=true, bgcolor="#fcfcfb", fontname="DejaVu Sans", nodesep=0.22, ranksep=0.35, pad=0.12];
+  node  [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=13, color="#52514e", fillcolor="#ffffff",
+         fontcolor="#0b0b0b", penwidth=1.2, margin="0.12,0.06"];
+  edge  [color="#52514e", arrowsize=0.7, penwidth=1.1];
+  bf    [label="Bright-field fields\n3 focal planes", fillcolor="#efeeea"];
+  real  [label="Real stains\n(check only)", fillcolor="#efeeea", style="rounded,filled,dashed", fontcolor="#52514e"];
+  chip  [label="Organ-on-a-chip\nmicroscopy image", fillcolor="#efeeea"];
+  q1    [label=<<b>Q1</b> Virtual staining  ⚙<br/><font point-size="10.5">U-Net, 2 seeds; TTA on GPU or --tta</font>>, color="#eb6834", fillcolor="#fde9e0", penwidth=1.6];
+  virt  [label="5 virtual stains\nDNA, ER, RNA, AGP, Mito", color="#eb6834"];
+  q2    [label=<<b>Q2</b> Drug response  ⚙<br/><font point-size="10.5">per well: toxicity, viability, vs DMSO</font>>, color="#2a78d6", fillcolor="#e2edfa", penwidth=1.6];
+  q3    [label=<<b>Q3</b> Single cells  ⚙<br/><font point-size="10.5">per field: Cellpose → features → states</font>>, color="#2a78d6", fillcolor="#e2edfa", penwidth=1.6];
+  q4    [label=<<b>Q4</b> Image quality  ⚙<br/><font point-size="10.5">DINOv2 + hand-crafted → P(good)</font>>, color="#1baf7a", fillcolor="#ddf3ea", penwidth=1.6];
+  rep   [label="Report\nHTML + JSON", fillcolor="#efeeea", penwidth=1.6];
+  bf -> q1 -> virt; virt -> q2; virt -> q3; chip -> q4;
+  q2 -> rep; q3 -> rep; q4 -> rep;
+  real -> rep [style=dashed, color="#a9a8a2"];
+  {rank=same; bf; real; chip}
+  {rank=same; q2; q3}
+  bf -> real -> chip [style=invis];
+  q2 -> q3 [style=invis];
+}

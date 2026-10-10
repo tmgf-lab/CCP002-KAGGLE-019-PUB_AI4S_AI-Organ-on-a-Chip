@@ -1,0 +1,5 @@
+source "$(dirname "$0")/common.sh"
+say "Q3: the winning segmentation path on real and virtual stains of 24 unseen fields, then real-vs-virtual agreement"
+run "export Q3_OUT=/tmp/demo/q3 Q3_CACHE=runs/q3_v2/cache"
+run "python -m sweep.q3_search features --smoke --seg-path \"\$(cat runs/q3_v2/seg_winner.json)\""
+run "python -m sweep.q3_search assess --smoke --paths-from ~/vcp_local/q3_v2 > /tmp/demo/q3.log; python show.py q3 /tmp/demo/q3"

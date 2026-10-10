@@ -1,0 +1,46 @@
+{
+ "config": "final/t038",
+ "run_dirs": [
+  "/kaggle/working/runs/q1_translation/final/t038_seed1",
+  "/kaggle/working/runs/q1_translation/final/t038_seed3"
+ ],
+ "inference": "seed_ensemble+tta",
+ "inference_val_r": {
+  "single_best_seed": 0.9586351468271822,
+  "tta": 0.9605723466425813,
+  "seed_ensemble": 0.960067201866095,
+  "seed_ensemble+tta": 0.9612364572544593
+ },
+ "ranking": [
+  {
+   "config": "final/t038",
+   "val_r": 0.9584358421857622,
+   "sd": 0.0002818593269401263,
+   "n": 2
+  },
+  {
+   "config": "variants/t038_brightfield_a549_2plates_none",
+   "val_r": 0.9566148879267298,
+   "sd": 0.0036437893746067876,
+   "n": 2
+  },
+  {
+   "config": "final/t031",
+   "val_r": 0.955535520443914,
+   "sd": 0.00023016265444686035,
+   "n": 3
+  },
+  {
+   "config": "baseline/",
+   "val_r": 0.9553431703292765,
+   "sd": 0.0002195588728429383,
+   "n": 3
+  },
+  {
+   "config": "final/t011",
+   "val_r": 0.9544295103051885,
+   "sd": 0.0001878858073952396,
+   "n": 3
+  }
+ ]
+}

@@ -1,0 +1,159 @@
+{
+ "q2": {
+  "toxic_0.5": {
+   "path": {
+    "cleaning": "near_zero_variance",
+    "transform": "zscore",
+    "selection": "drop_channel_block",
+    "reduction": "none",
+    "model": "logistic_l2",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "fitted_on": "BR00117017: 320 wells",
+   "held_out": "BR00117019: 320 wells",
+   "held_out_AUC": 0.998
+  },
+  "toxic_0.8": {
+   "path": {
+    "cleaning": "plate_robust_z_vs_dmso",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_unpenalised",
+    "calibration": "platt",
+    "imbalance": "class_weights"
+   },
+   "fitted_on": "BR00117017: 320 wells",
+   "held_out": "BR00117019: 320 wells",
+   "held_out_AUC": 0.995
+  },
+  "viability": {
+   "path": {
+    "cleaning": "winsorise",
+    "transform": "zscore",
+    "selection": "drop_channel_block",
+    "reduction": "none",
+    "model": "svm_linear"
+   },
+   "fitted_on": "BR00117017: 320 wells",
+   "held_out": "BR00117019: 320 wells",
+   "held_out_R2": 0.942
+  },
+  "treated_vs_dmso": {
+   "path": {
+    "cleaning": "none",
+    "transform": "zscore",
+    "selection": "none",
+    "reduction": "none",
+    "model": "logistic_l2",
+    "calibration": "none",
+    "imbalance": "class_weights"
+   },
+   "fitted_on": "BR00117017: 235 wells",
+   "held_out": "BR00117019: 229 wells",
+   "held_out_AUC": 0.727
+  }
+ },
+ "note": "Final models of the winning paths (nothing re-chosen); held-out = data never used to fit them.",
+ "q3": {
+  "path": {
+   "features": "morphology",
+   "processing": "robust_z_vs_dmso",
+   "embedding": "pca",
+   "clustering": "hierarchical_ward",
+   "n_states_choice": "silhouette"
+  },
+  "n_states": 4,
+  "fitted_on": "BR00117017: 108528 real cells",
+  "held_out": "BR00117019: 98922 matched real/virtual cell pairs",
+  "held_out_ARI_real_vs_virtual_states": 0.714,
+  "states": [
+   {
+    "state": 0,
+    "area": 1072.05,
+    "eccentricity": 0.8,
+    "solidity": 0.83,
+    "share_of_cells": 0.156
+   },
+   {
+    "state": 1,
+    "area": 459.32,
+    "eccentricity": 0.73,
+    "solidity": 0.93,
+    "share_of_cells": 0.496
+   },
+   {
+    "state": 2,
+    "area": 902.3,
+    "eccentricity": 0.66,
+    "solidity": 0.94,
+    "share_of_cells": 0.341
+   },
+   {
+    "state": 3,
+    "area": 3910.82,
+    "eccentricity": 0.68,
+    "solidity": 0.9,
+    "share_of_cells": 0.007
+   }
+  ]
+ },
+ "q4": {
+  "path": {
+   "preprocessing": "centre_crop",
+   "representation": "dinov2_small",
+   "fusion": "concat_with_handcrafted",
+   "reduction": "correlation_filter_0.9",
+   "model": "logistic_l1"
+  },
+  "examples_chosen": "3 random good + 3 random bad held-out images (seed 0), drawn without looking at the predictions",
+  "fitted_on": "2518 images, 53 experiments",
+  "held_out": "554 images, experiments ['230512', '221215', '230317', '220512', '221010', '230320'] (one per cell type)",
+  "held_out_AUC": 0.8,
+  "examples": [
+   {
+    "imageID": "230317_63",
+    "cell": "HPMEC",
+    "good": 1,
+    "p_good": 0.326,
+    "file": "train/good/cell_type_HPMEC/4_days/230317_63.png"
+   },
+   {
+    "imageID": "230320_22",
+    "cell": "HPMEC",
+    "good": 1,
+    "p_good": 0.885,
+    "file": "train/good/cell_type_HPMEC/4+_days/230320_22.png"
+   },
+   {
+    "imageID": "221010_80",
+    "cell": "HUVEC",
+    "good": 1,
+    "p_good": 0.914,
+    "file": "train/good/cell_type_HUVEC/0-1_days/221010_80.png"
+   },
+   {
+    "imageID": "230320_169",
+    "cell": "HPMEC",
+    "good": 0,
+    "p_good": 0.091,
+    "file": "train/bad/cell_type_HPMEC/4+_days/230320_169.png"
+   },
+   {
+    "imageID": "230512_52",
+    "cell": "A549",
+    "good": 0,
+    "p_good": 0.662,
+    "file": "train/bad/cell_type_A549/4+_days/230512_52.png"
+   },
+   {
+    "imageID": "230512_74",
+    "cell": "HPMEC",
+    "good": 0,
+    "p_good": 0.091,
+    "file": "train/bad/cell_type_HPMEC/4_days/230512_74.png"
+   }
+  ]
+ }
+}

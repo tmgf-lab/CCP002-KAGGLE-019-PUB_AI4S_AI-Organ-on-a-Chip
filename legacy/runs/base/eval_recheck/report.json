@@ -1,0 +1,211 @@
+{
+ "pixel": [
+  {
+   "group": "DMSO",
+   "channel": "AGP",
+   "pearson": 0.949,
+   "ssim": 0.904,
+   "psnr": 31.3
+  },
+  {
+   "group": "DMSO",
+   "channel": "DNA",
+   "pearson": 0.949,
+   "ssim": 0.942,
+   "psnr": 34.992
+  },
+  {
+   "group": "DMSO",
+   "channel": "ER",
+   "pearson": 0.967,
+   "ssim": 0.946,
+   "psnr": 32.299
+  },
+  {
+   "group": "DMSO",
+   "channel": "Mito",
+   "pearson": 0.952,
+   "ssim": 0.877,
+   "psnr": 30.364
+  },
+  {
+   "group": "DMSO",
+   "channel": "RNA",
+   "pearson": 0.977,
+   "ssim": 0.95,
+   "psnr": 31.718
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "AGP",
+   "pearson": 0.94,
+   "ssim": 0.907,
+   "psnr": 32.219
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "DNA",
+   "pearson": 0.918,
+   "ssim": 0.937,
+   "psnr": 35.3
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "ER",
+   "pearson": 0.962,
+   "ssim": 0.946,
+   "psnr": 33.06
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "Mito",
+   "pearson": 0.943,
+   "ssim": 0.888,
+   "psnr": 31.132
+  },
+  {
+   "group": "held-out cpds",
+   "channel": "RNA",
+   "pearson": 0.972,
+   "ssim": 0.948,
+   "psnr": 32.372
+  },
+  {
+   "group": "seen cpds",
+   "channel": "AGP",
+   "pearson": 0.94,
+   "ssim": 0.907,
+   "psnr": 31.983
+  },
+  {
+   "group": "seen cpds",
+   "channel": "DNA",
+   "pearson": 0.931,
+   "ssim": 0.937,
+   "psnr": 35.22
+  },
+  {
+   "group": "seen cpds",
+   "channel": "ER",
+   "pearson": 0.963,
+   "ssim": 0.948,
+   "psnr": 32.859
+  },
+  {
+   "group": "seen cpds",
+   "channel": "Mito",
+   "pearson": 0.945,
+   "ssim": 0.894,
+   "psnr": 31.519
+  },
+  {
+   "group": "seen cpds",
+   "channel": "RNA",
+   "pearson": 0.974,
+   "ssim": 0.95,
+   "psnr": 32.382
+  }
+ ],
+ "nuclei_count": {
+  "all": {
+   "pearson": 0.987436707504349,
+   "spearman": 0.9937845961949335,
+   "n_wells": 768
+  },
+  "DMSO": {
+   "pearson": 0.9980570304004789,
+   "spearman": 0.9959693461824831,
+   "n_wells": 128
+  },
+  "held-out cpds": {
+   "pearson": 0.9707833782741065,
+   "spearman": 0.9860004400118804,
+   "n_wells": 112
+  },
+  "seen cpds": {
+   "pearson": 0.9889427243427786,
+   "spearman": 0.9932175171083186,
+   "n_wells": 528
+  }
+ },
+ "phenotypic_activity": {
+  "real": {
+   "all": {
+    "mAP": 0.419,
+    "frac_active": 0.44,
+    "n": 302
+   },
+   "held-out cpds": {
+    "mAP": 0.339,
+    "frac_active": 0.327,
+    "n": 55
+   },
+   "seen cpds": {
+    "mAP": 0.437,
+    "frac_active": 0.466,
+    "n": 247
+   }
+  },
+  "virt": {
+   "all": {
+    "mAP": 0.313,
+    "frac_active": 0.331,
+    "n": 302
+   },
+   "held-out cpds": {
+    "mAP": 0.294,
+    "frac_active": 0.327,
+    "n": 55
+   },
+   "seen cpds": {
+    "mAP": 0.317,
+    "frac_active": 0.332,
+    "n": 247
+   }
+  },
+  "bf": {
+   "all": {
+    "mAP": 0.196,
+    "frac_active": 0.222,
+    "n": 302
+   },
+   "held-out cpds": {
+    "mAP": 0.159,
+    "frac_active": 0.182,
+    "n": 55
+   },
+   "seen cpds": {
+    "mAP": 0.205,
+    "frac_active": 0.231,
+    "n": 247
+   }
+  }
+ },
+ "texture": {
+  "DNA": {
+   "texture_r": 0.969,
+   "fine_energy_ratio": 0.774,
+   "mean_intensity_r": 0.953
+  },
+  "ER": {
+   "texture_r": 0.96,
+   "fine_energy_ratio": 0.724,
+   "mean_intensity_r": 0.987
+  },
+  "RNA": {
+   "texture_r": 0.968,
+   "fine_energy_ratio": 0.83,
+   "mean_intensity_r": 0.982
+  },
+  "AGP": {
+   "texture_r": 0.897,
+   "fine_energy_ratio": 0.507,
+   "mean_intensity_r": 0.976
+  },
+  "Mito": {
+   "texture_r": 0.701,
+   "fine_energy_ratio": 0.587,
+   "mean_intensity_r": 0.508
+  }
+ }
+}

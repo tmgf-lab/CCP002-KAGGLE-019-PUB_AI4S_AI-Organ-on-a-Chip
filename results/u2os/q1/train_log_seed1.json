@@ -1,0 +1,66 @@
+{
+ "args": {
+  "inputs": null,
+  "bf_norm": "plate",
+  "aug": false,
+  "target_transform": "linear",
+  "model": "unet",
+  "width": 64,
+  "depth": 4,
+  "base": 64,
+  "attention": false,
+  "upsampling": "bilinear",
+  "train_plates": [
+   "BR00117011"
+  ],
+  "qc": false,
+  "seed": 1,
+  "phases": [
+   {
+    "fraction": 0.25,
+    "steps": 2000
+   },
+   {
+    "fraction": 0.5,
+    "steps": 2000
+   },
+   {
+    "fraction": 1.0,
+    "steps": 4000
+   }
+  ]
+ },
+ "log": [
+  {
+   "phase": 1,
+   "fraction": 0.25,
+   "step": 2000,
+   "val_r": 0.833589336222472,
+   "train_r": 0.8319149683952958,
+   "gap": -0.0016743678271762263,
+   "loss": 0.014680235646665096,
+   "minutes": 15.8036674618721
+  },
+  {
+   "phase": 2,
+   "fraction": 0.5,
+   "step": 4000,
+   "val_r": 0.8607319392791586,
+   "train_r": 0.8609554419756055,
+   "gap": 0.0002235026964468867,
+   "loss": 0.020448248833417892,
+   "minutes": 31.644840375582376
+  },
+  {
+   "phase": 3,
+   "fraction": 1.0,
+   "step": 8000,
+   "val_r": 0.8802306938652925,
+   "train_r": 0.8824227124881784,
+   "gap": 0.002192018622885872,
+   "loss": 0.015138374641537666,
+   "minutes": 63.051953653494515
+  }
+ ],
+ "best_mean_r": 0.8802306938652925
+}

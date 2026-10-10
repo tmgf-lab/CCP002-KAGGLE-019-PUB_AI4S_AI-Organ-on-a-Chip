@@ -1,0 +1,43 @@
+# Q1 - Virtual staining (bright-field -> 5 fluorescence stains)
+# A path = data -> cleaning -> transform -> model -> exploration -> optimisation -> inference -> evaluation
+# Stage A (search, RUNNING on Kaggle since 2026-10-07 21:23) explores the tree below.
+# Stage B (final) adds the nodes marked [final] to the best paths - they cannot join a running search.
+
+tree:
+  data:          [brightfield_a549, brightfield_a549+u2os, brightfield_a549_2plates]   # 2plates = + BR00117016 [final]
+  cleaning:      [none, focus_qc]                         # focus_qc: drop blurred/saturated training fields [final]
+  transform:     [plate_scaling, image_scaling+augmentation, plate_scaling+log_target]
+  model:         [unet, unet_resnet34_pretrained]
+  exploration:                                            # combined freely
+    width:       [16, 32, 64]
+    depth:       [4, 5]
+    attention:   [off, on]
+    upsampling:  [transpose, bilinear]
+  optimisation:  [adamw_onecycle]                          # fixed in the search (lr 2e-3, batch 12, crop 256, L1 loss)
+  inference:     [single_pass, test_time_augmentation, seed_ensemble]   # [final] no retraining needed
+  evaluation:    [pixel_r]                                 # validation fields only
+
+rules:
+  - "unet_resnet34_pretrained -> width and depth come from the encoder"
+
+search:                       # stage A
+  method: bayesian_tpe
+  early_stopping: successive_halving    # worse half stopped at each checkpoint, near-misses kept
+  paths_to_try: 40
+  parallel: 2
+  checkpoints:
+    - {data: 25%,  steps: 2000}
+    - {data: 50%,  steps: 2000}
+    - {data: 100%, steps: 4000}
+
+final:                        # stage B
+  - "top 3 search paths x 3 seeds (+ baseline x 3 seeds), full data"
+  - "best path x {brightfield_a549, brightfield_a549_2plates} x {none, focus_qc} x 3 seeds"
+  - "inference variants on the best trained model: single_pass vs test_time_augmentation vs seed_ensemble"
+  - "winner (by validation) -> evaluated ONCE on the test plates with all metrics"
+
+evaluation_final:
+  pixels:    [pearson_r, ssim, psnr, texture_energy]
+  counts:    [pearson_r, lins_ccc, icc, bland_altman, regression]
+  phenotype: [activity_map, target_retrieval_map]
+  inference: {frequentist: [bootstrap_ci, paired_tests], bayesian: [posterior_p_virtual_gt_brightfield]}

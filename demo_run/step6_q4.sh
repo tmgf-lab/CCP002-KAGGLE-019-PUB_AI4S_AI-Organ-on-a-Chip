@@ -1,0 +1,5 @@
+source "$(dirname "$0")/common.sh"
+say "Q4: guided search for chip quality control on 3,072 real organ-on-a-chip images (cached embeddings, 30 paths)"
+run "EMB=runs/kaggle/vcp-q4-embeddings-and-finetune/q4/emb"
+run "VCP_VERBOSE_PATHS=1 python -m sweep.q4_chip_qc search --emb-dir \$EMB --out /tmp/demo/q4 --budget 30 --workers 8 --hours 0.1 | grep -v -E '^ {1,4}[\"}]|^[{}]|^best:'"
+run "python show.py search /tmp/demo/q4/q4_search_summary.json"
