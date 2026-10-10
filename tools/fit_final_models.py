@@ -14,6 +14,7 @@ The cross-validated scores in the report stay the reported ones; these held-out 
 Writes models/q2_final.pkl, models/q3_states.json, models/q4_chip_qc.json and models/final_models.json.
 """
 import argparse
+import hashlib
 import json
 import sys
 import tempfile
@@ -83,7 +84,9 @@ def q2(report):
                                ("held_out_R2" if d["task"] == "reg" else "held_out_AUC"): round(held_score, 3)}
         print(f"Q2 {label:16} fitted on {len(d['y'])} wells of {CAL}; held-out {HELD} "
               f"{'R2' if d['task'] == 'reg' else 'AUC'} {held_score:.3f}", flush=True)
-    (OUT / "q2_final.pkl").write_bytes(cloudpickle.dumps({"sklearn": sklearn.__version__, "models": models}))
+    blob = cloudpickle.dumps({"sklearn": sklearn.__version__, "models": models})
+    (OUT / "q2_final.pkl").write_bytes(blob)
+    print("models/q2_final.pkl SHA-256 (set Q2_SHA256 in vcp_system.py to this):", hashlib.sha256(blob).hexdigest())
 
 
 def _held_csv(sites, tmp):

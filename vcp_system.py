@@ -28,20 +28,27 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 MODELS = ROOT / "models"
 STAINS = ["DNA", "ER", "RNA", "AGP", "Mito"]
+# SHA-256 of models/q2_final.pkl as written by tools/fit_final_models.py. A pickle can run code when loaded, so the file is only
+# unpickled if it matches; otherwise the same winning paths are refitted from results/ instead (update this after a refit).
+Q2_SHA256 = "d651bd94366851e631a30d56d497586f484cb976a903fa4c1b00986454e98086"
 
 
 def load_q2():
     """The saved Q2 pipelines when the installed scikit-learn is the one that saved them; otherwise the same winning paths
     refitted on the calibration plate from results/ (deterministic, a few seconds), so the system runs with any version."""
+    import hashlib
     import sklearn
     try:
         import cloudpickle
-        saved = cloudpickle.loads((MODELS / "q2_final.pkl").read_bytes())
+        raw = (MODELS / "q2_final.pkl").read_bytes()
+        if hashlib.sha256(raw).hexdigest() != Q2_SHA256:
+            raise ValueError("models/q2_final.pkl does not match its recorded SHA-256, so it is not unpickled")
+        saved = cloudpickle.loads(raw)
         if saved["sklearn"] == sklearn.__version__:
             return saved["models"]
         print(f"Q2: models saved with scikit-learn {saved['sklearn']}, installed {sklearn.__version__}: refitting them", flush=True)
     except Exception as e:  # noqa: BLE001
-        print(f"Q2: saved models not loadable here ({type(e).__name__}): refitting them", flush=True)
+        print(f"Q2: saved models not loadable here ({type(e).__name__}: {e}): refitting them", flush=True)
     from tools.fit_final_models import fit_q2
     return fit_q2()[0]
 
