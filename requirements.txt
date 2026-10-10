@@ -28,7 +28,7 @@ igraph==1.0.0
 xgboost==3.2.0
 nbformat==5.9.2
 cloudpickle==3.1.2        # the saved final models (models/*.pkl)
-gradio==5.50.0            # web demo (apps/web_demo)
+gradio==6.16.0            # web demo (apps/web_demo)
 ipykernel==6.25.0         # run notebooks/walkthrough.ipynb in this environment (register it as a Jupyter kernel)
 # optional: StarDist segmentation option in Q3 (needs TensorFlow); the search skips it when not installed
 # stardist==0.9.2
