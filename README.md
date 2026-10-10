@@ -4,7 +4,7 @@ Label-free, non-destructive readout of organ-on-a-chip experiments: predict Cell
 toxicity/response, single-cell analysis, and an automatic chip quality check. Submission of team **tmgf** (tiagomgfernandes) to
 *AI4S Open Innovation: AI for Life Science*, category **End-to-End System**.
 
-**Video:** see the Kaggle Writeup<!--YOUTUBE--> · **Notebook:** https://www.kaggle.com/code/tiagomgfernandes/organ-on-a-chip-virtual-staining-walkthrough · **Report:** [`docs/technical_report.pdf`](docs/technical_report.pdf)
+**Video:** [https://youtu.be/ddly-1rWOGY](https://youtu.be/ddly-1rWOGY) · **Notebook:** https://www.kaggle.com/code/tiagomgfernandes/organ-on-a-chip-virtual-staining-walkthrough · **Report:** [`docs/technical_report.pdf`](docs/technical_report.pdf)
 
 ## Quick start (CPU is enough)
 

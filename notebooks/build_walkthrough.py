@@ -13,7 +13,7 @@ cells = [
 md("""# Label-free, non-destructive readout of organ-on-a-chip experiments: a walkthrough
 
 **AI4S Open Innovation: AI for Life Science** · Category: **End-to-End System** · Team **tmgf** (tiagomgfernandes)
-· [Code](https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip) · Video: see the Kaggle Writeup<!--YOUTUBE-->
+· [Code](https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip) · Video: [https://youtu.be/ddly-1rWOGY](https://youtu.be/ddly-1rWOGY)
 
 The standard Cell Painting stain protocol requires fixation, which makes it an endpoint assay, so
 each sample gives one snapshot; this project asks whether the same information can be read from **bright-field images alone**, through four questions:

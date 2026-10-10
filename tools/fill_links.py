@@ -11,7 +11,7 @@ from pathlib import Path
 VALUES = {
     "[GITHUB URL]": "https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip",
     "[KAGGLE NOTEBOOK URL]": "https://www.kaggle.com/code/tiagomgfernandes/organ-on-a-chip-virtual-staining-walkthrough",
-    "[YOUTUBE URL]": "",           # after uploading video/demo_video.mp4
+    "[YOUTUBE URL]": "https://youtu.be/ddly-1rWOGY",
 }
 
 ROOT = Path(__file__).resolve().parents[1]

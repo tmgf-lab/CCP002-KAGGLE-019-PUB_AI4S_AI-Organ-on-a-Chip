@@ -512,6 +512,7 @@ Q3/Q4 models also needs the per-cell tables and chip embeddings (2 GB), recreate
 # 13. Team, data, licences and AI disclosure
 
 - Team tmgf: one member, tiagomgfernandes (Kaggle), who also leads the team.
+- Demo video: https://youtu.be/ddly-1rWOGY.
 - Code (MIT): https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip. Search configs `sweep/configs/*.yaml`;
   engine `sweep/engine.py`; every path's scores in `results/`.
 - Data: CPJUMP1 (cpg0000, CC0) [5], available from the Cell Painting Gallery [11] on the Registry of Open Data on AWS; the AWS

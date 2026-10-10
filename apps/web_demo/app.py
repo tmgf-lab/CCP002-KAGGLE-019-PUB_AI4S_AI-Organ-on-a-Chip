@@ -174,7 +174,7 @@ Mito), **Q2** reads the drug response (toxicity, viability, non-toxic drug effec
 Model: the winner of a guided search over U-Net variants (width 64, bilinear up-sampling, 2 seeds). Replicated on a second cell
 line (U2OS): four stains r 0.89–0.95, mitochondria 0.65.
 
-[Code & report](https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip) · Video: see the Kaggle Writeup<!--YOUTUBE--> · [Kaggle notebook](https://www.kaggle.com/code/tiagomgfernandes/organ-on-a-chip-virtual-staining-walkthrough) · Data: JUMP Cell Painting pilot (CPJUMP1, CC0)"""
+[Code & report](https://github.com/tmgf-lab/CCP002-KAGGLE-019-PUB_AI4S_AI-Organ-on-a-Chip) · Video: [https://youtu.be/ddly-1rWOGY](https://youtu.be/ddly-1rWOGY) · [Kaggle notebook](https://www.kaggle.com/code/tiagomgfernandes/organ-on-a-chip-virtual-staining-walkthrough) · Data: JUMP Cell Painting pilot (CPJUMP1, CC0)"""
 
 with gr.Blocks(title="Virtual Cell Painting") as demo:
     gr.Markdown(INTRO)
